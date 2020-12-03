@@ -14,6 +14,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CourseSearchComponent } from './course-search/course-search.component';
 import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
+import { AboutpageComponent } from './aboutpage/aboutpage.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.compo
     DashboardComponent,
     CourseSearchComponent,
     ScheduleDetailComponent,
+    AboutpageComponent,
   ],
   imports: [
     BrowserModule,
