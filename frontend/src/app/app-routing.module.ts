@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'courses', component: CoursesComponent },
   { path: 'schedules', component: DashboardComponent },
   { path: '', redirectTo: '/schedules', pathMatch: 'full' },
-  { path: 'detail/:catalog_nbr', component: CourseDetailComponent },
+  { path: 'detail/:subject/:catalog_nbr', component: CourseDetailComponent },
   { path: 'schedule/:name', component: ScheduleDetailComponent },
 ];
 

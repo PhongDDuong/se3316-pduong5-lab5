@@ -175,9 +175,9 @@ router.get('/', (req, res) => {
 
 
 //get one course using id
-router.get('/:id', function (req, res) {
+router.get('/:id/:id2', function (req, res) {
 
-  const course = courses.find(c => c.catalog_nbr.toString() === req.params.id);
+  const course = courses.find(c => c.subject.toString() === req.params.id && c.catalog_nbr.toString() === req.params.id2);
   if(!course) return res.status(404).send('Course not found');
   
   //courses.filter(course => course.subject.indexOf(req.params.id) !== -1);

@@ -91,11 +91,11 @@ export class CourseService {
     );
   }
 
-  getCourse(catalog_nbr: string): Observable<Course> {
-    const url = `${this.coursesUrl}/${catalog_nbr}`;
+  getCourse(subject: string,catalog_nbr: string): Observable<Course> {
+    const url = `${this.coursesUrl}/${subject}/${catalog_nbr}`;
     return this.http.get<Course>(url).pipe(
-      tap(_ => this.log(`fetched catalog_nbr=${catalog_nbr}`)),
-      catchError(this.handleError<Course>(`getCourse id=${catalog_nbr}`))
+      tap(_ => this.log(`fetched course=${subject},${catalog_nbr}`)),
+      catchError(this.handleError<Course>(`getCourse =${catalog_nbr}`))
     );
   }
 
