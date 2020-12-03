@@ -20,7 +20,7 @@ import { CourseService } from '../course.service';
 export class CourseSearchComponent implements OnInit {
   courses$: Observable<Course[]>;
   postData ={};
-  private scheduleUrl = 'api/schedule';
+  private scheduleUrl = 'http://localhost:3000/api/schedule';
 
   private searchTerms = new Subject<string>();
 

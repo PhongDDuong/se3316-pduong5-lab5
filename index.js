@@ -48,7 +48,6 @@ app.get('/api/schedule', (req, res) => {
   for(schedule in store.store) {
     result.push(schedule);
   }
-  console.log(result);
   res.send(result);
 });
 

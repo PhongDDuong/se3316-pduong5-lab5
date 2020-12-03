@@ -19,7 +19,6 @@ export class CoursesComponent implements OnInit {
   getSchedule(): void {
     this.courseService.getSchedules()
         .subscribe(schedules => {
-          console.log(schedules)
           this.schedules = schedules;
         })
         
@@ -28,7 +27,6 @@ export class CoursesComponent implements OnInit {
   getCourses(): void {
     this.courseService.getCourses()
         .subscribe(courses => {
-          console.log(courses)
           this.courses = courses;
         })
         
@@ -37,7 +35,6 @@ export class CoursesComponent implements OnInit {
   ngOnInit() {
     this.getCourses();
     this.getSchedule();
-    console.log(this.schedules);
   }
 
 }
