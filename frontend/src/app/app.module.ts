@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CourseSearchComponent } from './course-search/course-search.component';
 import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
 import { AboutpageComponent } from './aboutpage/aboutpage.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AboutpageComponent } from './aboutpage/aboutpage.component';
     CourseSearchComponent,
     ScheduleDetailComponent,
     AboutpageComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
