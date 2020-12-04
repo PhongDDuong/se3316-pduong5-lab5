@@ -1,0 +1,14 @@
+<div *ngIf="account">
+  <br>
+  <button (click)="goBack()">go back</button>
+  <h2>{{account.name| uppercase}}'s Account Details</h2>
+  <div><span>name: </span>{{account.name}}</div>
+  <div><span>email: </span>{{account.email}}</div>
+  <div><span>password: </span>{{account.password}}</div>
+  <div><span>admin: </span>{{account.admin}}</div>
+  <div><span>activated: </span>{{account.activated}}</div>
+  <br>
+  <button (click)="activateAccount(account.name,account.email,account.password,account.admin,account.activated)">Activate/Deactivate</button>
+  &nbsp;
+  <button (click)="adminAccount(account.name,account.email,account.password,account.admin,account.activated)">Change Admin Priveleges</button>
+</div>

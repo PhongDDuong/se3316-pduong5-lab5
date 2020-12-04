@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Course } from './course';
 import { Schedule } from './schedule';
+import { Account } from './account';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -14,6 +15,7 @@ export class CourseService {
 
   private coursesUrl = 'http://localhost:3000/api/courses';
   private scheduleUrl = 'http://localhost:3000/api/schedule';
+  private accountUrl = 'http://localhost:3000/api/account';
 
 
   httpOptions = {
@@ -79,6 +81,39 @@ export class CourseService {
     return this.http.delete<Schedule>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted schedule id=${name}`)),
       catchError(this.handleError<Schedule>('deleteSchedule'))
+    );
+  }
+
+  addAccount(name: String,email: String,password: String,admin: String,activated: String): Observable<Schedule> {
+    var postData = {
+      name: name,
+      email: email,
+      password: password,
+      admin: admin,
+      activated: activated,
+    }
+
+    const url = `${this.accountUrl}/create/`;
+    return this.http.post<Schedule>(url, postData).pipe(
+      tap(_ => this.log(`added schedule id=${name}`)),
+      catchError(this.handleError<Schedule>('deleteSchedule'))
+    );
+  }
+
+  getAccounts(): Observable<[]> {
+    this.messageService.add('CourseService: fetched accounts');
+    return this.http.get<[]>(this.accountUrl)
+    .pipe(
+      tap(_ => this.log('fetched accounts')),
+      catchError(this.handleError<[]>('getAccounts', []))
+    );
+  }
+
+  getAccount(account: string): Observable<Account> {
+    const url = `${this.accountUrl}/${account}`;
+    return this.http.get<Account>(url).pipe(
+      tap(_ => this.log(`fetched course=${account}`)),
+      catchError(this.handleError<Account>(`getAccount =${account}`))
     );
   }
   

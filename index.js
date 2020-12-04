@@ -179,12 +179,12 @@ app.post('/api/account/create', function (req, res) {
   }
 
   if(!existing){
-    accountStore.put(account.email,account);
+    accountStore.put(account.name,account);
     res.send(account);
   }
 })
 
-//add details to account
+//change details to account
 app.post('/api/account/', function (req, res) {
   const { error } = validateAccount(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);

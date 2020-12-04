@@ -17,6 +17,8 @@ import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.compo
 import { AboutpageComponent } from './aboutpage/aboutpage.component';
 import { LoginComponent } from './login/login.component';
 import { CourseSearchBasicComponent } from './course-search-basic/course-search-basic.component';
+import { AccountsComponent } from './accounts/accounts.component';
+import { AccountDetailComponent } from './account-detail/account-detail.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { CourseSearchBasicComponent } from './course-search-basic/course-search-
     AboutpageComponent,
     LoginComponent,
     CourseSearchBasicComponent,
+    AccountsComponent,
+    AccountDetailComponent,
   ],
   imports: [
     BrowserModule,
