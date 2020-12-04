@@ -116,6 +116,14 @@ export class CourseService {
       catchError(this.handleError<Account>(`getAccount =${account}`))
     );
   }
+
+  loginAccount(email: string,password: string): Observable<Account> {
+    const url = `${this.accountUrl}/${email}/${password}`;
+    return this.http.get<Account>(url).pipe(
+      tap(_ => this.log(`fetched course=${email}`)),
+      catchError(this.handleError<Account>(`getAccount =${email}`))
+    );
+  }
   
   getCourses(): Observable<Course[]> {
     this.messageService.add('CourseService: fetched courses');

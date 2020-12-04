@@ -26,20 +26,33 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  /*
-  getAccount(email: string,password: string): void {
+  
+  loginAccount(email: string,password: string): void {
     if(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/.test(email)||/[` !@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(password)){
       alert("invalid characters used");
     }
 
-    if(name===""|| email===""||password===""){
+    if(email===""||password===""){
       alert("missing input(s)")
     }
     else{
-      this.courseService.getAccount(email,password)
-      .subscribe();
+      this.courseService.loginAccount(email,password)
+      .subscribe(account => {
+        if(account==undefined){
+          alert("account not found")
+        }
+
+        else if(account.activated==="false"){
+          alert("Account has been deactivated. Please contact support@gmail.com to reactivate account.")
+        }
+
+        else{
+          this.account = account;
+          alert(account.activated)
+        }
+      });
     }
-  }*/
+  }
 
   ngOnInit(): void {
   }

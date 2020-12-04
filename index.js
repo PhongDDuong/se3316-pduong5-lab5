@@ -157,6 +157,28 @@ app.get('/api/account/:id', (req, res) => {
   res.send(result);
 });
 
+//get account when given email and password
+app.get('/api/account/:id/:id2', (req, res) => {
+  const accounts = [];
+  
+  for(item in accountStore.store) {
+    accounts.push(accountStore.get(item))
+  }
+  var found = false;
+
+
+  for(i=0;i<accounts.length;i++) {
+    if(accounts[i].email===req.params.id && accounts[i].password===req.params.id2){
+      found = true;
+      res.send(accounts[i]);
+    }
+  }
+  if(!found){
+    res.send("not found");
+  }
+});
+
+
 //create account
 app.post('/api/account/create', function (req, res) {
   const { error } = validateAccount(req.body); //result.error
@@ -304,7 +326,7 @@ function validateSchedule(schedule){
 
 function validateAccount(account){
   const schema = {
-    name: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
+    name: Joi.string().required().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
     email: Joi.string().required().email().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
     password: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
     admin: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
