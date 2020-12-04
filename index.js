@@ -2,6 +2,8 @@ const express = require('express');
 var router = express.Router();
 const data = require("./Lab3-timetable-data.json");//json file containing courses
 const Storage = require('node-storage');//backend storage
+const bcrypt = require ('bcrypt');
+const saltRounds = 10;
 const Joi = require('joi');
 const app = express();
 
@@ -163,18 +165,31 @@ app.get('/api/account/:id', (req, res) => {
 //get account when given email and password
 app.get('/api/account/:id/:id2', (req, res) => {
   var accounts = [];
+  var pass;
+  var account;
   
   for(item in accountStore.store) {
     accounts.push(accountStore.get(item))
   }
+  console.log(accounts.length);
   var found = false;
 
-  for(i=0;i<accounts.length;i++) {
-    if(accounts[i].email===req.params.id && accounts[i].password===req.params.id2){
+  for(i=0;i<accounts.length; i++) {
+    if(accounts[i].email===req.params.id){
+      pass = accounts[i].password;
+      account = accounts[i];
       found = true;
-      res.send(accounts[i]);
+
     }
   }
+
+  bcrypt.compare(req.params.id2, pass, function(err, result) {
+    if (result) {
+      found = true;
+      res.send(account);
+      console.log(account)
+    }
+  });
   if(!found){
     res.send("not found");
   }
@@ -191,32 +206,34 @@ app.post('/api/account/create', function (req, res) {
   for(item in accountStore.store) {
     accounts.push(accountStore.get(item))
   }
-  
-  const account = {
-    email: req.body.email,
-    name: req.body.name,
-    password: req.body.password,
-    admin: req.body.admin,
-    activated: req.body.activated,
-  }
 
-  var existing = false;
-
-  for(i=0;i<accounts.length;i++) {
-    if(accounts[i].email===req.body.email){
-      existing = true;
+  bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+    const account = {
+      email: req.body.email,
+      name: req.body.name,
+      password: hash,
+      admin: req.body.admin,
+      activated: req.body.activated,
     }
-  }
-
-
-  if(!existing){
-    accountStore.put(account.name,account);
-    res.send(account);
-  }
-  else{
-    console.log("existing account found")
-    res.send("account already exists")
-  }
+  
+    var existing = false;
+  
+    for(i=0;i<accounts.length;i++) {
+      if(accounts[i].email===req.body.email){
+        existing = true;
+      }
+    }
+  
+  
+    if(!existing){
+      accountStore.put(account.name,account);
+      res.send(account);
+    }
+    else{
+      console.log("existing account found")
+      res.send("account already exists")
+    }
+  });
 })
 
 //change details to account
@@ -332,7 +349,7 @@ function validateAccount(account){
   const schema = {
     name: Joi.string().required().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
     email: Joi.string().required().email().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
-    password: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
+    password: Joi.string().required().regex(/[`!@#%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
     admin: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
     activated: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
   };

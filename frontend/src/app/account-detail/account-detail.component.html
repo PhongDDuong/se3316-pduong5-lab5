@@ -8,7 +8,7 @@
   <div><span>admin: </span>{{account.admin}}</div>
   <div><span>activated: </span>{{account.activated}}</div>
   <br>
-  <button (click)="activateAccount(account.name,account.email,account.password,account.admin,account.activated)">Activate/Deactivate</button>
-  &nbsp;
   <button (click)="adminAccount(account.name,account.email,account.password,account.admin,account.activated)">Change Admin Priveleges</button>
+  &nbsp;
+  <button (click)="activateAccount(account.name,account.email,account.password,account.admin,account.activated)">Activate/Deactivate</button>
 </div>

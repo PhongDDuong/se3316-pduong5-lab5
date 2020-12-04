@@ -1,1 +1,1 @@
-{"test":{"email":"test@gmail.com","name":"test","password":"test","admin":"false","activated":"false"},"administrator":{"email":"support@gmail.com","name":"administrator","password":"admin","admin":"true","activated":"true"}}
+{"test":{"email":"test@gmail.com","name":"test","password":"$2b$10$29.2JmniSx3t6BueL1.s/eSRCLDOQ2gEePOowTGaNgMBCnHVtW65i","admin":"true","activated":"true"}}

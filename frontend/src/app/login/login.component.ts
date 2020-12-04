@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../course.service';
 import { Account } from '../account';
 
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,7 +13,11 @@ import { Account } from '../account';
 export class LoginComponent implements OnInit {
   account: Account;
 
-  constructor(private courseService: CourseService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private courseService: CourseService,
+    private location: Location
+  ) { }
 
   addAccount(name: string,email: string,password: string): void {
     if(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[` !#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/.test(email)||/[` !@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(password)){
@@ -55,10 +62,15 @@ export class LoginComponent implements OnInit {
 
         else{
           this.account = account;
-          alert(this.account.name+" has signed in")
+          alert(this.account.name+" has signed in");
+          //this.goBack();
         }
       });
     }
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   ngOnInit(): void {
