@@ -1,1 +1,1 @@
-{"admin":{"email":"phongdduong@gmail.com","name":"admin","password":"admin","admin":"true","activated":"true"},"test":{"email":"test@gmail.com","name":"test","password":"test","admin":"false","activated":"false"}}
+{"test":{"email":"test@gmail.com","name":"test","password":"test","admin":"false","activated":"false"},"administrator":{"email":"support@gmail.com","name":"administrator","password":"admin","admin":"true","activated":"true"}}

@@ -159,13 +159,12 @@ app.get('/api/account/:id', (req, res) => {
 
 //get account when given email and password
 app.get('/api/account/:id/:id2', (req, res) => {
-  const accounts = [];
+  var accounts = [];
   
   for(item in accountStore.store) {
     accounts.push(accountStore.get(item))
   }
   var found = false;
-
 
   for(i=0;i<accounts.length;i++) {
     if(accounts[i].email===req.params.id && accounts[i].password===req.params.id2){
@@ -183,6 +182,12 @@ app.get('/api/account/:id/:id2', (req, res) => {
 app.post('/api/account/create', function (req, res) {
   const { error } = validateAccount(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
+
+  var accounts = [];
+  
+  for(item in accountStore.store) {
+    accounts.push(accountStore.get(item))
+  }
   
   const account = {
     email: req.body.email,
@@ -194,42 +199,38 @@ app.post('/api/account/create', function (req, res) {
 
   var existing = false;
 
-  for(item in accountStore.store) {
-    if(req.body.email == item){
+  for(i=0;i<accounts.length;i++) {
+    if(accounts[i].email===req.body.email){
       existing = true;
     }
   }
+
 
   if(!existing){
     accountStore.put(account.name,account);
     res.send(account);
   }
+  else{
+    console.log("existing account found")
+    res.send("account already exists")
+  }
 })
 
 //change details to account
-app.post('/api/account/', function (req, res) {
+app.post('/api/account', function (req, res) {
   const { error } = validateAccount(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
   
-  
-  if(accountStore.get(req.body.schedule).subject!==" "){
-    var account = {
-      schedule: req.body.schedule,
-      subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
-      catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
-    }
+  const account = {
+    email: req.body.email,
+    name: req.body.name,
+    password: req.body.password,
+    admin: req.body.admin,
+    activated: req.body.activated,
   }
-  else{
-    var account = {
-      schedule: req.body.schedule,
-      subject: req.body.subject,
-      catalog_nbr: req.body.catalog_nbr,
-    }
-  }
+  accountStore.put(account.name,account);
+  res.send(account);
 
-  //courses.push(course);
-  scheduleStore.put(account.schedule,account);
-  res.send(schedule);
 })
 
 

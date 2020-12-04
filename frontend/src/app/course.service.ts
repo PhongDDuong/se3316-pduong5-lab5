@@ -100,6 +100,22 @@ export class CourseService {
     );
   }
 
+  updateAccount(name: String,email: String,password: String,admin: String,activated: String): Observable<Schedule> {
+    var postData = {
+      name: name,
+      email: email,
+      password: password,
+      admin: admin,
+      activated: activated,
+    }
+
+    const url = `${this.accountUrl}`;
+    return this.http.post<Schedule>(url, postData).pipe(
+      tap(_ => this.log(`added schedule id=${name}`)),
+      catchError(this.handleError<Schedule>('deleteSchedule'))
+    );
+  }
+
   getAccounts(): Observable<[]> {
     this.messageService.add('CourseService: fetched accounts');
     return this.http.get<[]>(this.accountUrl)

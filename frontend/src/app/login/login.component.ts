@@ -22,7 +22,11 @@ export class LoginComponent implements OnInit {
     }
     else{
       this.courseService.addAccount(name,email,password,"false","true")
-      .subscribe();
+      .subscribe(account => {
+        if(account==undefined){
+          alert("An account with that email already exists")
+        }
+      });
     }
   }
 
@@ -30,6 +34,9 @@ export class LoginComponent implements OnInit {
   loginAccount(email: string,password: string): void {
     if(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/.test(email)||/[` !@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(password)){
       alert("invalid characters used");
+    }
+    if(email=="admin"){
+      email="support@gmail.com";
     }
 
     if(email===""||password===""){
@@ -48,7 +55,7 @@ export class LoginComponent implements OnInit {
 
         else{
           this.account = account;
-          alert(account.activated)
+          alert(this.account.name+" has signed in")
         }
       });
     }

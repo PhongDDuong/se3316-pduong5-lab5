@@ -22,7 +22,6 @@ export class AccountDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAccount();
-    console.log(this.account);
   }
 
   getAccount(): void {
@@ -43,7 +42,7 @@ export class AccountDetailComponent implements OnInit {
     else if(state==="true"){
       state="false";
     }
-    this.courseService.addAccount(name,email,password,admin,state)
+    this.courseService.updateAccount(name,email,password,admin,state)
     .subscribe();
     this.refresh();
   }
@@ -57,7 +56,7 @@ export class AccountDetailComponent implements OnInit {
     else if(state==="true"){
       state="false";
     }
-    this.courseService.addAccount(name,email,password,state,activated)
+    this.courseService.updateAccount(name,email,password,state,activated)
     .subscribe();
     this.refresh();
   }
