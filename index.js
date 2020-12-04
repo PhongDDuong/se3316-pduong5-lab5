@@ -7,7 +7,8 @@ const app = express();
 
 app.use(express.json());
 
-var store = new Storage('schedule');
+var scheduleStore = new Storage('schedule');
+var accountStore = new Storage('accounts');
 
 const port = process.env.Port || 3000;//port number
 
@@ -41,11 +42,13 @@ app.use(function (req, res, next) {
   next();
 })
 
+////////////////////////////////////////////////////////////////////////////////////////////SCHEDULES///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //get all schedules
 app.get('/api/schedule', (req, res) => {
   const result = [];
 
-  for(schedule in store.store) {
+  for(schedule in scheduleStore.store) {
     result.push(schedule);
   }
   res.send(result);
@@ -54,11 +57,11 @@ app.get('/api/schedule', (req, res) => {
 //get courses of a schedule when given a name
 app.get('/api/schedule/:id', (req, res) => {
   const result = [];
-  result.push(store.get(req.params.id))
+  result.push(scheduleStore.get(req.params.id))
   res.send(result);
 });
 
-//add course to schedule
+//create schedule
 app.post('/api/schedule/create', function (req, res) {
   const { error } = validateSchedule(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
@@ -70,14 +73,14 @@ app.post('/api/schedule/create', function (req, res) {
   }
   var existing = false;
 
-  for(item in store.store) {
+  for(item in scheduleStore.store) {
     if(req.body.schedule == item){
       existing = true;
     }
   }
 
   if(!existing){
-    store.put(schedule.schedule,schedule);
+    scheduleStore.put(schedule.schedule,schedule);
     res.send(schedule);
   }
 })
@@ -88,11 +91,11 @@ app.post('/api/schedule/', function (req, res) {
   if(error) return res.status(400).send(result.error.details[0].message);
   
   
-  if(store.get(req.body.schedule).subject!==" "){
+  if(scheduleStore.get(req.body.schedule).subject!==" "){
     var schedule = {
       schedule: req.body.schedule,
-      subject: store.get(req.body.schedule).subject+","+req.body.subject,
-      catalog_nbr: store.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
+      subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
+      catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
     }
   }
   else{
@@ -104,7 +107,7 @@ app.post('/api/schedule/', function (req, res) {
   }
 
   //courses.push(course);
-  store.put(schedule.schedule,schedule);
+  scheduleStore.put(schedule.schedule,schedule);
   res.send(schedule);
 })
 
@@ -112,15 +115,15 @@ app.post('/api/schedule/', function (req, res) {
 
 //delete all schedules
 app.delete('/api/schedule/all', function (req, res) {
-  for(schedule in store.store) {
-    store.remove(schedule);
+  for(schedule in scheduleStore.store) {
+    scheduleStore.remove(schedule);
   }
   res.send("deleted");
 });
 
 //delete a schedule when given its name in url
 app.delete('/api/schedule/:id', function (req, res) {
-  store.remove(req.params.id);
+  scheduleStore.remove(req.params.id);
   res.send("deleted");
 });
 
@@ -130,10 +133,113 @@ app.delete('/api/schedule/', function (req, res) {
 
   if(error) return res.status(400).send(result.error.details[0].message);
 
-  store.remove(req.body.input);
+  scheduleStore.remove(req.body.input);
 
   res.send("deleted");
 });
+
+////////////////////////////////////////////////////////////////////////////////////////////ACCOUNTS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//get all accounts
+app.get('/api/account', (req, res) => {
+  const result = [];
+
+  for(account in accountStore.store) {
+    result.push(account);
+  }
+  res.send(result);
+});
+
+//get details of a account when given a name
+app.get('/api/account/:id', (req, res) => {
+  const result = [];
+  result.push(accountStore.get(req.params.id))
+  res.send(result);
+});
+
+//create account
+app.post('/api/account/create', function (req, res) {
+  const { error } = validateAccount(req.body); //result.error
+  if(error) return res.status(400).send(result.error.details[0].message);
+  
+  const account = {
+    email: req.body.email,
+    name: req.body.name,
+    password: req.body.password,
+    admin: req.body.admin,
+    activated: req.body.activated,
+  }
+
+  var existing = false;
+
+  for(item in accountStore.store) {
+    if(req.body.email == item){
+      existing = true;
+    }
+  }
+
+  if(!existing){
+    accountStore.put(account.email,account);
+    res.send(account);
+  }
+})
+
+//add details to account
+app.post('/api/account/', function (req, res) {
+  const { error } = validateAccount(req.body); //result.error
+  if(error) return res.status(400).send(result.error.details[0].message);
+  
+  
+  if(accountStore.get(req.body.schedule).subject!==" "){
+    var account = {
+      schedule: req.body.schedule,
+      subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
+      catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
+    }
+  }
+  else{
+    var account = {
+      schedule: req.body.schedule,
+      subject: req.body.subject,
+      catalog_nbr: req.body.catalog_nbr,
+    }
+  }
+
+  //courses.push(course);
+  scheduleStore.put(account.schedule,account);
+  res.send(schedule);
+})
+
+
+
+//delete all accounts
+app.delete('/api/account/all', function (req, res) {
+  for(account in accountStore.store) {
+    accountStore.remove(account);
+  }
+  res.send("deleted");
+});
+
+//delete a schedule when given its name in url
+app.delete('/api/account/:id', function (req, res) {
+  accountStore.remove(req.params.id);
+  res.send("deleted");
+});
+
+//delete a account when given its name
+app.delete('/api/account/', function (req, res) {
+  const { error } = validateInput(req.body); //result.error
+
+  if(error) return res.status(400).send(result.error.details[0].message);
+
+  accountStore.remove(req.body.input);
+
+  res.send("deleted");
+});
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////COURSES///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //get all courses
 router.get('/', (req, res) => {
@@ -194,6 +300,18 @@ function validateSchedule(schedule){
   };
 
   return result = Joi.validate(schedule, schema);
+}
+
+function validateAccount(account){
+  const schema = {
+    name: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
+    email: Joi.string().required().email().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
+    password: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
+    admin: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
+    activated: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
+  };
+
+  return result = Joi.validate(account, schema);
 }
 
 //input validation
