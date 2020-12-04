@@ -16,6 +16,7 @@ import { CourseSearchComponent } from './course-search/course-search.component';
 import { ScheduleDetailComponent } from './schedule-detail/schedule-detail.component';
 import { AboutpageComponent } from './aboutpage/aboutpage.component';
 import { LoginComponent } from './login/login.component';
+import { CourseSearchBasicComponent } from './course-search-basic/course-search-basic.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { LoginComponent } from './login/login.component';
     ScheduleDetailComponent,
     AboutpageComponent,
     LoginComponent,
+    CourseSearchBasicComponent,
   ],
   imports: [
     BrowserModule,

@@ -6,8 +6,12 @@
     <ul class="courses">
       <li *ngFor="let course of courses$ | async" >
         <a routerLink="/detail/{{course.subject}}/{{course.catalog_nbr}}">
-          <span class="badge">{{course.subject}} | {{course.catalog_nbr}} </span> Time: {{course.course_info[0].start_time}} - {{course.course_info[0].end_time}} | Section: {{course.course_info[0].class_section}} | Component: {{course.course_info[0].ssr_component}} | Days: {{course.course_info[0].days}}<span class="badge2" style="float: right">{{course.className}}</span> <button style="float: right" (click)="addCourse(course.subject,course.catalog_nbr.toString())">Add Course</button>
+          <span class="badge">{{course.subject}} | {{course.catalog_nbr}} </span> Time: {{course.course_info[0].start_time}} - {{course.course_info[0].end_time}} | Section: {{course.course_info[0].class_section}} | Component: {{course.course_info[0].ssr_component}} | Days: {{course.course_info[0].days}}<span class="badge2" style="float: right;">{{course.className}}</span>
         </a>
+
       </li>
     </ul>
+
+    
+
   </div>
