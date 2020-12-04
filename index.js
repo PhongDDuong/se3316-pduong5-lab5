@@ -83,6 +83,9 @@ app.post('/api/schedule/create', function (req, res) {
     scheduleStore.put(schedule.schedule,schedule);
     res.send(schedule);
   }
+  else{
+    res.send("course already exists");
+  }
 })
 
 //add course to schedule

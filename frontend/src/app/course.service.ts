@@ -63,17 +63,22 @@ export class CourseService {
     }
   }
 
-  addSchedule(name: String): Observable<Schedule> {
-    var postData = {
-      schedule: name,
-      subject: " ",
-      catalog_nbr: " ",
+  addSchedule(name: string): Observable<Schedule> {
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)){
+      alert("invalid characters used");
     }
-    const url = `${this.scheduleUrl}/create/`;
-    return this.http.post<Schedule>(url, postData).pipe(
-      tap(_ => this.log(`added schedule id=${name}`)),
-      catchError(this.handleError<Schedule>('deleteSchedule'))
-    );
+    else{
+      var postData = {
+        schedule: name,
+        subject: " ",
+        catalog_nbr: " ",
+      }
+      const url = `${this.scheduleUrl}/create/`;
+      return this.http.post<Schedule>(url, postData).pipe(
+        tap(_ => this.log(`added schedule id=${name}`)),
+        catchError(this.handleError<Schedule>('deleteSchedule'))
+      );
+    }
   }
 
   deleteSchedule(name: String): Observable<Schedule> {
