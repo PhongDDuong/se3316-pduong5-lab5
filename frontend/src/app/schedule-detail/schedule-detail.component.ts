@@ -28,12 +28,24 @@ export class ScheduleDetailComponent implements OnInit {
     this.getSchedule();
   }
 
-  deleteSchedule(): void {
-    const name = this.route.snapshot.paramMap.get('name');
-    this.courseService.deleteSchedule(name)
+  showButtons(): void{
+    document.getElementById("cancel").hidden = false;
+    document.getElementById("confirm").hidden = false;
+  }
+
+  deleteSchedule(answer: string): void {
+    if(answer=='false'){
+      document.getElementById("cancel").hidden = true;
+      document.getElementById("confirm").hidden = true;
+    }
+    else{
+      const name = this.route.snapshot.paramMap.get('name');
+      this.courseService.deleteSchedule(name)
       .subscribe(schedule => {
         this.goBack();
       });
+    }
+    
   }
 
   getSchedule(): void {

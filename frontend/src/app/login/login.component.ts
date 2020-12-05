@@ -47,14 +47,19 @@ export class LoginComponent implements OnInit {
     }
 
     if(email===""||password===""){
-      alert("missing input(s)")
+      alert("Please enter required fields")
+    }
+    else if(email===""){
+      alert("Please enter a valid email")
+    }
+    else if(password===""){
+      alert("Please enter a password")
     }
     else{
       this.courseService.loginAccount(email,password)
       .subscribe(account => {
-        console.log(account)
         if(account==undefined){
-          alert("account not found")
+          alert("Wrong email or password")
         }
 
         else if(account.activated==="false"){
@@ -75,6 +80,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.account)
   }
 
 }

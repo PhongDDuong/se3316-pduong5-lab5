@@ -2,7 +2,12 @@
     <br>
     <button (click)="goBack()">go back</button>
     &nbsp;
-    <button (click)="deleteSchedule()">delete schedule</button>
+    <button (click)="showButtons()">delete schedule</button>
+    &nbsp;
+    <button id="cancel" (click)="deleteSchedule('false')" hidden>Cancel</button>
+    &nbsp;
+    <button id="confirm" (click)="deleteSchedule('true')" hidden>Confirm</button>
+
     <h2>{{schedule.schedule| uppercase}} Courses</h2>
     <ul class="courses">
       <li *ngFor="let course of matchingCourses">
