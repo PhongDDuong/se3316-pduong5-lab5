@@ -32,6 +32,11 @@ export class AccountDetailComponent implements OnInit {
       });
   }
 
+  updatePassword(name: string,email: string,password: string, admin: string, activated: string): void {
+    this.courseService.updateAccount(name,email,password,admin,activated)
+    .subscribe();
+    this.refresh();
+  }
 
   activateAccount(name: string,email: string,password: string, admin: string, activated: string): void {
     var state = activated;

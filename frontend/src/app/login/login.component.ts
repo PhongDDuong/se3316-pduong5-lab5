@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit {
     else{
       this.courseService.loginAccount(email,password)
       .subscribe(account => {
+        console.log(account)
         if(account==undefined){
           alert("account not found")
         }

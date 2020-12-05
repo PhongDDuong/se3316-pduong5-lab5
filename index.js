@@ -187,10 +187,10 @@ app.get('/api/account/:id/:id2', (req, res) => {
       found = true;
       res.send(account);
     }
+    else{
+      res.send("not found");
+    }
   });
-  if(!found){
-    res.send("not found");
-  }
 });
 
 
@@ -239,15 +239,30 @@ app.post('/api/account', function (req, res) {
   const { error } = validateAccount(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
   
-  const account = {
-    email: req.body.email,
-    name: req.body.name,
-    password: req.body.password,
-    admin: req.body.admin,
-    activated: req.body.activated,
+  if(req.body.password.length<20){
+    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+      var account = {
+        email: req.body.email,
+        name: req.body.name,
+        password: hash,
+        admin: req.body.admin,
+        activated: req.body.activated,
+      }
+      accountStore.put(account.name,account);
+      res.send(account);
+    });
   }
-  accountStore.put(account.name,account);
-  res.send(account);
+  else{
+    var account = {
+      email: req.body.email,
+      name: req.body.name,
+      password: req.body.password,
+      admin: req.body.admin,
+      activated: req.body.activated,
+    }
+    accountStore.put(account.name,account);
+    res.send(account);
+  }
 
 })
 
