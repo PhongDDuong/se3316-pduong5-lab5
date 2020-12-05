@@ -1,1 +1,1 @@
-{"test":{"email":"test@gmail.com","name":"test","password":"$2b$10$29.2JmniSx3t6BueL1.s/eSRCLDOQ2gEePOowTGaNgMBCnHVtW65i","admin":"true","activated":"true"}}
+{"test":{"email":"test@gmail.com","name":"test","password":"$2b$10$29.2JmniSx3t6BueL1.s/eSRCLDOQ2gEePOowTGaNgMBCnHVtW65i","admin":"false","activated":"true"},"admin":{"email":"support@gmail.com","name":"admin","password":"$2b$10$8V75NJ0PryrxL66V1Pj.oOH6suYExxusqaSdpIOlZs7ygY6s2Z07u","admin":"true","activated":"true"}}

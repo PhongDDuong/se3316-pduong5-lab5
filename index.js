@@ -171,7 +171,6 @@ app.get('/api/account/:id/:id2', (req, res) => {
   for(item in accountStore.store) {
     accounts.push(accountStore.get(item))
   }
-  console.log(accounts.length);
   var found = false;
 
   for(i=0;i<accounts.length; i++) {
@@ -187,7 +186,6 @@ app.get('/api/account/:id/:id2', (req, res) => {
     if (result) {
       found = true;
       res.send(account);
-      console.log(account)
     }
   });
   if(!found){
@@ -349,7 +347,7 @@ function validateAccount(account){
   const schema = {
     name: Joi.string().required().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
     email: Joi.string().required().email().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
-    password: Joi.string().required().regex(/[`!@#%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
+    password: Joi.string().required().regex(/[`!@#%^&*()_+\-=\[\]{};':"\\|<>\?~]/ , { invert: true }),
     admin: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
     activated: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
   };
