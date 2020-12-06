@@ -72,8 +72,7 @@ export class LoginComponent implements OnInit {
           this.account = account;
           //alert(this.account.name+" has signed in");
           localStorage.setItem('user',JSON.stringify(account))
-          this.router.navigateByUrl('/'); 
-          this.router.navigate(['/listview']);
+          this.refresh();
           
           //this.goBack();
         }
@@ -81,13 +80,20 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  refresh(): void {
+    window.location.reload();
+  }
 
   goBack(): void {
     this.location.back();
   }
 
   ngOnInit(): void {
-    console.log(this.account)
+    var account = localStorage.getItem('user');
+    console.log(account)
+    if(account!==null){
+      this.router.navigateByUrl('/'); 
+    }
   }
 
 }
