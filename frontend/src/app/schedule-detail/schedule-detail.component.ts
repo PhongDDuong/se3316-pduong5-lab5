@@ -44,16 +44,22 @@ export class ScheduleDetailComponent implements OnInit {
     }
   }
 
-  /*
-  updateSchedule(input: string): void{
-    console.log(input);
-    this.courseService.updateSchedule(name,email,password,admin,activated)
-    .subscribe();
-
-
-  }*/
-
   
+  updateDesc(input: string): void{
+    if(this.checkOwner()){
+      console.log(input);
+      this.courseService.updateScheduleDesc(this.schedule.schedule,this.account.name,input)
+      .subscribe();
+      this.refresh();
+    }
+    else{
+      alert("You do not have permission to change this schedule")
+    }
+  }
+
+  refresh(): void {
+    window.location.reload();
+  }
 
   showButtons(): void{
     document.getElementById("cancel").hidden = false;
@@ -81,6 +87,7 @@ export class ScheduleDetailComponent implements OnInit {
       .subscribe(schedule => {
         this.schedule = schedule[0];
         this.getCourses();
+        console.log(this.schedule);
       });
   }
 

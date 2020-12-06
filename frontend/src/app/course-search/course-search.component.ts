@@ -21,6 +21,8 @@ export class CourseSearchComponent implements OnInit {
   courses$: Observable<Course[]>;
   postData ={};
   account: Account;
+
+  
   private scheduleUrl = 'http://localhost:3000/api/schedule';
 
   private searchTerms = new Subject<string>();
@@ -32,7 +34,8 @@ export class CourseSearchComponent implements OnInit {
     this.searchTerms.next(term);
   }
 
-  addCourse(subject: string,catalog_nbr: string,publicStatus: string,description: string): void {
+  updateSchedule(subject: string,catalog_nbr: string): void {
+    /*
     const name = this.route.snapshot.paramMap.get('name');
     this.postData = {
       schedule: name,
@@ -44,7 +47,10 @@ export class CourseSearchComponent implements OnInit {
     }
     this.http.post(this.scheduleUrl,this.postData).toPromise().then(data => {
       console.log(data);
-    });
+    });*/
+    const name = this.route.snapshot.paramMap.get('name');
+    this.courseService.updateSchedule(name,this.account.name,subject,catalog_nbr)
+      .subscribe();
     this.refresh();
   }
 

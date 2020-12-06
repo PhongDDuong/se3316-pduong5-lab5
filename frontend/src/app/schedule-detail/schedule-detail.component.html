@@ -11,11 +11,11 @@
     <h2>{{schedule.schedule| uppercase}} Courses</h2>
     <h3>Created By: {{schedule.creator}}</h3>
     <h3>Description:</h3>
-    <p>{{schedule.Description}}</p>
-    <input #descBox id="desc-box" *ngIf="checkOwner()" placeholder="Enter Description"/>
+    <p>{{schedule.description}}</p>
+    <input #descBox id="desc-box" placeholder="Enter Description"/>
     <br>
     <br>
-    <button (click)="updateScheduleDesc(descBox.value)" *ngIf="checkOwner()"> Add/Update Description</button>
+    <button (click)="updateDesc(descBox.value)"> Add/Update Description</button>
     <ul class="courses">
       <li *ngFor="let course of matchingCourses">
           <a routerLink="/detail/{{course.subject}}/{{course.catalog_nbr}}">

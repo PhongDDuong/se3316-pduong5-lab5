@@ -64,7 +64,7 @@ export class CourseService {
   }
 
   addSchedule(name: string, creator: string, publicStatus: string, description: string): Observable<Schedule> {
-    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(publicStatus)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(description)){
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)){
       alert("invalid characters used");
     }
     else{
@@ -85,8 +85,30 @@ export class CourseService {
     }
   }
 
-  updateSchedule(name: string, creator: string, publicStatus: string, description: string): Observable<Schedule> {
-    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(publicStatus)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(description)){
+  updateSchedule(name: string, creator: string,subject: string,catalog_nbr: string): Observable<Schedule> {
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)){
+      alert("invalid characters used");
+    }
+    else{
+      var postData = {
+        schedule: name,
+        subject: subject,
+        catalog_nbr: catalog_nbr,
+        creator: creator,
+        public: " ",
+        description: " ",
+      }
+
+      const url = `${this.scheduleUrl}`;
+      return this.http.post<Schedule>(url, postData).pipe(
+        tap(_ => this.log(`added schedule id=${name}`)),
+        catchError(this.handleError<Schedule>('deleteSchedule'))
+      );
+    }
+  }
+
+  updateScheduleDesc(name: string, creator: string,description: string): Observable<Schedule> {
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)){
       alert("invalid characters used");
     }
     else{
@@ -95,11 +117,11 @@ export class CourseService {
         subject: " ",
         catalog_nbr: " ",
         creator: creator,
-        public: publicStatus,
-        description: description
+        public: " ",
+        description: description,
       }
 
-      const url = `${this.scheduleUrl}/create/`;
+      const url = `${this.scheduleUrl}`;
       return this.http.post<Schedule>(url, postData).pipe(
         tap(_ => this.log(`added schedule id=${name}`)),
         catchError(this.handleError<Schedule>('deleteSchedule'))

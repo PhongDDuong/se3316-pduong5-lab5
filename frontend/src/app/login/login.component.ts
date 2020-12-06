@@ -3,7 +3,6 @@ import { CourseService } from '../course.service';
 import { Account } from '../account';
 
 import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 
@@ -17,7 +16,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private courseService: CourseService,
     private location: Location
   ) { }

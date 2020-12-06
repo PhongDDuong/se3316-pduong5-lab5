@@ -100,14 +100,24 @@ app.post('/api/schedule/', function (req, res) {
   const { error } = validateSchedule(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
   
-  
-  if(scheduleStore.get(req.body.schedule).subject!==" "){
+  if(scheduleStore.get(req.body.schedule).description!==req.body.description){
+    var schedule = {
+      schedule: req.body.schedule,
+      subject: scheduleStore.get(req.body.schedule).subject,
+      catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr,
+      creator: req.body.creator,
+      public: scheduleStore.get(req.body.schedule).public,
+      description: req.body.description,
+    }
+  }
+
+  else if(scheduleStore.get(req.body.schedule).subject!==" "){
     var schedule = {
       schedule: req.body.schedule,
       subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
       catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
       creator: req.body.creator,
-      public: req.body.public,
+      public: scheduleStore.get(req.body.schedule).public,
       description: scheduleStore.get(req.body.schedule).description
     }
   }
