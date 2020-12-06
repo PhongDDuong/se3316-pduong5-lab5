@@ -2,10 +2,13 @@
     <br>
     <input #searchBox id="search-box" placeholder="Email"/>
     <br>
-    <input #searchBox2 id="search-box2" placeholder="Password"/>
+    <input #searchBox2 type="password" id="search-box2" placeholder="Password"/>
     <br>
     <br>
     <button (click)="loginAccount(searchBox.value,searchBox2.value)">Login</button>
+    <br>
+    <br>
+    <button routerLink="/auth/google">Sign In with Google</button>
 </div>
 <div>
     <br>
@@ -13,7 +16,7 @@
     <br>
     <input #searchBox4 id="search-box4" placeholder="Email"/>
     <br>
-    <input #searchBox5 id="search-box5" placeholder="Password"/>
+    <input #searchBox5 type="password" id="search-box5" placeholder="Password"/>
     <br>
     <br>
     <button (click)="addAccount(searchBox3.value,searchBox4.value,searchBox5.value)"> Register</button>

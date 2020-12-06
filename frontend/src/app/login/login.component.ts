@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../course.service';
 import { Account } from '../account';
 
+import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-login',
@@ -14,6 +16,7 @@ export class LoginComponent implements OnInit {
   account: Account;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private courseService: CourseService,
     private location: Location
@@ -36,7 +39,6 @@ export class LoginComponent implements OnInit {
       });
     }
   }
-
   
   loginAccount(email: string,password: string): void {
     if(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/.test(email)||/[` !@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(password)){
@@ -68,12 +70,17 @@ export class LoginComponent implements OnInit {
 
         else{
           this.account = account;
-          alert(this.account.name+" has signed in");
+          //alert(this.account.name+" has signed in");
+          localStorage.setItem('user',JSON.stringify(account))
+          this.router.navigateByUrl('/'); 
+          this.router.navigate(['/listview']);
+          
           //this.goBack();
         }
       });
     }
   }
+
 
   goBack(): void {
     this.location.back();
