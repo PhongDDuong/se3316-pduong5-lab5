@@ -11,17 +11,8 @@ export class AppComponent implements OnInit{
   title = 'Schedule Maker';
   account: Account;
 
-  checkLogin(): boolean{
-    if(this.account!==null){
-      return(true);
-    }
-    else{
-      return(false);
-    }
-  }
-
   isAdmin(): boolean{
-    if(this.checkLogin()){
+    if(this.account){
       if(this.account.admin=="true"){
         return(true);
       }
@@ -50,7 +41,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.account = JSON.parse(localStorage.getItem('user'));
-    console.log(this.account);
   }
 
 }

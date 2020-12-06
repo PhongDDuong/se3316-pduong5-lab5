@@ -6,8 +6,8 @@
   &nbsp;
   <a routerLink="/about">About</a>
   &nbsp;
-  <a (click)="logout()" style="float: right;" *ngIf="checkLogin()" >Logout</a>
-  <a routerLink="/login" style="float: right;" *ngIf="!checkLogin()" >Login</a>
+  <a (click)="logout()" style="float: right;" *ngIf="account" >Logout</a>
+  <a routerLink="/login" style="float: right;" *ngIf="!account" >Login</a>
   &nbsp;
   <a routerLink="/accounts" style="float: right;" *ngIf="isAdmin()">Accounts</a>
   &nbsp;
