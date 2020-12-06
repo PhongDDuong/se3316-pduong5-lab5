@@ -2,7 +2,7 @@
 <input #searchBox id="search-box" placeholder="Schedule name"/>
 &nbsp;
 <button (click)="addSchedule(searchBox.value)">create schedule</button>
-<h2>Schedules</h2>
+<h2>Public Schedules</h2>
 <div class="grid grid-pad">
   <a *ngFor="let schedule of schedules" class="col-1-4" routerLink="/schedule/{{schedule}}">
     <div class="module course">

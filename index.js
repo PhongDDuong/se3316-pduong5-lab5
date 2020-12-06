@@ -74,6 +74,7 @@ app.post('/api/schedule/create', function (req, res) {
     schedule: req.body.schedule,
     subject: req.body.subject,
     catalog_nbr: req.body.catalog_nbr,
+    //creator: req.body.creator,
   }
   var existing = false;
 

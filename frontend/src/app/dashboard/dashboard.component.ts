@@ -9,15 +9,18 @@ import { CourseService } from '../course.service';
 })
 export class DashboardComponent implements OnInit {
   schedules: Schedule[] = [];
+  account: Account;
 
   constructor(private courseService: CourseService) { }
 
   ngOnInit() {
+    this.account = JSON.parse(localStorage.getItem('user'));
     this.getSchedules();
   }
 
   addSchedule(name: string): void {
-    this.courseService.addSchedule(name)
+    if(this.account){
+      this.courseService.addSchedule(name)
       .subscribe(schedule =>{
         if(schedule==undefined){
           alert("Schedule name already exists.")
@@ -26,6 +29,10 @@ export class DashboardComponent implements OnInit {
           this.refresh();
         }
       });
+    }
+    else{
+      alert("You must sign in to create a schedule")
+    }
   }
 
   getSchedules(): void {
