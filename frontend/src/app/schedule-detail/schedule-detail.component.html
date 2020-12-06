@@ -10,6 +10,9 @@
 
     <h2>{{schedule.schedule| uppercase}} Courses</h2>
     <h3>Created By: {{schedule.creator}}</h3>
+    <h3>Public: {{schedule.public}}</h3>
+    <button (click)="togglePublic()">Toggle</button>
+
     <h3>Description:</h3>
     <p>{{schedule.description}}</p>
     <input #descBox id="desc-box" placeholder="Enter Description"/>

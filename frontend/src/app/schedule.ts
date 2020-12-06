@@ -5,5 +5,6 @@ export interface Schedule {
     creator: string;
     owner: string;
     description: string;
+    public: string;
   }
   

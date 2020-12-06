@@ -107,6 +107,28 @@ export class CourseService {
     }
   }
 
+  updateSchedulePub(name: string, creator: string,publicState: string): Observable<Schedule> {
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(publicState)){
+      alert("invalid characters used");
+    }
+    else{
+      var postData = {
+        schedule: name,
+        subject: " ",
+        catalog_nbr: " ",
+        creator: creator,
+        public: publicState,
+        description: " ",
+      }
+
+      const url = `${this.scheduleUrl}`;
+      return this.http.post<Schedule>(url, postData).pipe(
+        tap(_ => this.log(`added schedule id=${name}`)),
+        catchError(this.handleError<Schedule>('deleteSchedule'))
+      );
+    }
+  }
+
   updateScheduleDesc(name: string, creator: string,description: string): Observable<Schedule> {
     if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)){
       alert("invalid characters used");

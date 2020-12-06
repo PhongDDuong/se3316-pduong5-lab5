@@ -44,6 +44,25 @@ export class ScheduleDetailComponent implements OnInit {
     }
   }
 
+  togglePublic(): void{
+    if(this.checkOwner()){
+      var state = this.schedule.public;
+      if(state=="false"){
+        state = "true";
+      }
+      else{
+        state = "false";
+      }
+      
+      this.courseService.updateScheduleDesc(this.schedule.schedule,this.account.name,state)
+      .subscribe();
+      this.refresh();
+    }
+    else{
+      alert("You do not have permission to change this schedule")
+    }
+  }
+
   
   updateDesc(input: string): void{
     if(this.checkOwner()){
