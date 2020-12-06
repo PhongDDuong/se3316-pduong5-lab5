@@ -74,7 +74,9 @@ app.post('/api/schedule/create', function (req, res) {
     schedule: req.body.schedule,
     subject: req.body.subject,
     catalog_nbr: req.body.catalog_nbr,
-    creator: req.body.creator
+    creator: req.body.creator,
+    public: req.body.public,
+    description: req.body.description
   }
   var existing = false;
 
@@ -104,7 +106,9 @@ app.post('/api/schedule/', function (req, res) {
       schedule: req.body.schedule,
       subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
       catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
-      creator: req.body.creator
+      creator: req.body.creator,
+      public: req.body.public,
+      description: scheduleStore.get(req.body.schedule).description
     }
   }
   else{
@@ -112,7 +116,9 @@ app.post('/api/schedule/', function (req, res) {
       schedule: req.body.schedule,
       subject: req.body.subject,
       catalog_nbr: req.body.catalog_nbr,
-      creator: req.body.creator
+      creator: req.body.creator,
+      public: req.body.public,
+      description: req.body.description
     }
   }
 
@@ -359,6 +365,8 @@ function validateSchedule(schedule){
     subject: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
     catalog_nbr: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
     creator: Joi.string().required().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
+    public: Joi.string().required().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
+    description: Joi.string().required().regex(/[`#$%^&*()_+\-=\[\]{};':"\\|<>\/~]/ , { invert: true }),
   };
 
   return result = Joi.validate(schedule, schema);
@@ -368,7 +376,7 @@ function validateAccount(account){
   const schema = {
     name: Joi.string().required().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
     email: Joi.string().required().email().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
-    password: Joi.string().required().regex(/[`!@#%^&*()_+\-=\[\]{};':"\\|<>\?~]/ , { invert: true }),
+    password: Joi.string().required().regex(/[`!@#%^&*()_+\-=\[\]{};':"\\|.<>\?~]/ , { invert: true }),
     admin: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
     activated: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
   };

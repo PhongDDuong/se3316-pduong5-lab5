@@ -63,8 +63,8 @@ export class CourseService {
     }
   }
 
-  addSchedule(name: string, creator: string): Observable<Schedule> {
-    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)){
+  addSchedule(name: string, creator: string, publicStatus: string, description: string): Observable<Schedule> {
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(publicStatus)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(description)){
       alert("invalid characters used");
     }
     else{
@@ -72,9 +72,33 @@ export class CourseService {
         schedule: name,
         subject: " ",
         catalog_nbr: " ",
-        creator: creator
+        creator: creator,
+        public: publicStatus,
+        description: description
       }
-      
+
+      const url = `${this.scheduleUrl}/create/`;
+      return this.http.post<Schedule>(url, postData).pipe(
+        tap(_ => this.log(`added schedule id=${name}`)),
+        catchError(this.handleError<Schedule>('deleteSchedule'))
+      );
+    }
+  }
+
+  updateSchedule(name: string, creator: string, publicStatus: string, description: string): Observable<Schedule> {
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(publicStatus)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(description)){
+      alert("invalid characters used");
+    }
+    else{
+      var postData = {
+        schedule: name,
+        subject: " ",
+        catalog_nbr: " ",
+        creator: creator,
+        public: publicStatus,
+        description: description
+      }
+
       const url = `${this.scheduleUrl}/create/`;
       return this.http.post<Schedule>(url, postData).pipe(
         tap(_ => this.log(`added schedule id=${name}`)),

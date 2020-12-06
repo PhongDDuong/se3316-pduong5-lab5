@@ -2,7 +2,7 @@
     <br>
     <button (click)="goBack()">go back</button>
     &nbsp;
-    <button (click)="showButtons()">delete schedule</button>
+    <button (click)="showButtons()" *ngIf="checkOwner()">delete schedule</button>
     &nbsp;
     <button id="cancel" (click)="deleteSchedule('false')" hidden>Cancel</button>
     &nbsp;
@@ -10,6 +10,12 @@
 
     <h2>{{schedule.schedule| uppercase}} Courses</h2>
     <h3>Created By: {{schedule.creator}}</h3>
+    <h3>Description:</h3>
+    <p>{{schedule.Description}}</p>
+    <input #descBox id="desc-box" *ngIf="checkOwner()" placeholder="Enter Description"/>
+    <br>
+    <br>
+    <button (click)="updateScheduleDesc(descBox.value)" *ngIf="checkOwner()"> Add/Update Description</button>
     <ul class="courses">
       <li *ngFor="let course of matchingCourses">
           <a routerLink="/detail/{{course.subject}}/{{course.catalog_nbr}}">
@@ -17,5 +23,6 @@
           </a>
       </li>
     </ul>
-    <app-course-search></app-course-search>
+    <h3>Amount of courses: {{matchingCourses.length}}</h3>
+    <app-course-search *ngIf="checkOwner()"></app-course-search>
   </div>

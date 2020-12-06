@@ -32,13 +32,15 @@ export class CourseSearchComponent implements OnInit {
     this.searchTerms.next(term);
   }
 
-  addCourse(subject: string,catalog_nbr: string): void {
+  addCourse(subject: string,catalog_nbr: string,publicStatus: string,description: string): void {
     const name = this.route.snapshot.paramMap.get('name');
     this.postData = {
       schedule: name,
       subject: subject,
       catalog_nbr: catalog_nbr,
       creator: this.account.name,
+      public: publicStatus,
+      description: description,
     }
     this.http.post(this.scheduleUrl,this.postData).toPromise().then(data => {
       console.log(data);

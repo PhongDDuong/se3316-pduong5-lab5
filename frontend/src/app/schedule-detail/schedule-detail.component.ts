@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Schedule } from '../schedule';
 import { Course } from '../course';
+import { Account } from '../account';
 
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -23,10 +24,36 @@ export class ScheduleDetailComponent implements OnInit {
 
   courses: Course[];
   matchingCourses = [];
+  account: Account;
+
+
 
   ngOnInit(): void {
+    this.account = JSON.parse(localStorage.getItem('user'));
     this.getSchedule();
   }
+
+  checkOwner(): boolean{
+    if(this.account){
+      if(this.account.name == this.schedule.creator|| this.account.admin == "true"){
+        return(true);
+      }
+      else{
+        return(false);
+      }
+    }
+  }
+
+  /*
+  updateSchedule(input: string): void{
+    console.log(input);
+    this.courseService.updateSchedule(name,email,password,admin,activated)
+    .subscribe();
+
+
+  }*/
+
+  
 
   showButtons(): void{
     document.getElementById("cancel").hidden = false;
@@ -65,7 +92,7 @@ export class ScheduleDetailComponent implements OnInit {
         })
   }
 
-  getScheduleCourses(): void{
+  getScheduleCourses(): void{//////////////////////////////////////////////change this
     //console.log(this.courses[0].catalog_nbr);
     var catnum = this.schedule.catalog_nbr.split(",");
     var subjects = this.schedule.subject.split(",");

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { Account } from './account';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,8 @@ import { Account } from './account';
 export class AppComponent implements OnInit{
   title = 'Schedule Maker';
   account: Account;
+
+  constructor(private router: Router) { }
 
   isAdmin(): boolean{
     if(this.account){
@@ -27,16 +29,18 @@ export class AppComponent implements OnInit{
 
   logout(): void{
     localStorage.clear();
-    alert("Successfully logged out");
+    //alert("Successfully logged out");
+    this.refresh();
+    this.router.navigateByUrl('/'); 
   }
 
   refresh(): void {
     window.location.reload();
   }
-
+  /*
   delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );
-  }
+  }*/
 
   ngOnInit(): void {
     this.account = JSON.parse(localStorage.getItem('user'));
