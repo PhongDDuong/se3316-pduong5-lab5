@@ -100,7 +100,7 @@ app.post('/api/schedule/', function (req, res) {
   const { error } = validateSchedule(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
   
-  if(scheduleStore.get(req.body.schedule).description!==req.body.description){
+  if(scheduleStore.get(req.body.schedule).description!==req.body.description && req.body.description!== " "){
     var schedule = {
       schedule: req.body.schedule,
       subject: scheduleStore.get(req.body.schedule).subject,
@@ -111,7 +111,7 @@ app.post('/api/schedule/', function (req, res) {
     }
   }
 
-  else if(scheduleStore.get(req.body.schedule).public!==req.body.public){
+  else if(scheduleStore.get(req.body.schedule).public!==req.body.public && req.body.public!== " "){
     var schedule = {
       schedule: req.body.schedule,
       subject: scheduleStore.get(req.body.schedule).subject,
