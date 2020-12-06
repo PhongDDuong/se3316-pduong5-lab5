@@ -28,7 +28,6 @@ export class AppComponent implements OnInit{
   logout(): void{
     localStorage.clear();
     alert("Successfully logged out");
-    this.refresh();
   }
 
   refresh(): void {

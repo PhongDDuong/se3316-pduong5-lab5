@@ -20,6 +20,7 @@ import { CourseService } from '../course.service';
 export class CourseSearchComponent implements OnInit {
   courses$: Observable<Course[]>;
   postData ={};
+  account: Account;
   private scheduleUrl = 'http://localhost:3000/api/schedule';
 
   private searchTerms = new Subject<string>();
@@ -37,6 +38,7 @@ export class CourseSearchComponent implements OnInit {
       schedule: name,
       subject: subject,
       catalog_nbr: catalog_nbr,
+      creator: this.account.name,
     }
     this.http.post(this.scheduleUrl,this.postData).toPromise().then(data => {
       console.log(data);
@@ -45,6 +47,7 @@ export class CourseSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.account = JSON.parse(localStorage.getItem('user'));
     this.courses$ = this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
       debounceTime(300),

@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
 
   addSchedule(name: string): void {
     if(this.account){
-      this.courseService.addSchedule(name)
+      this.courseService.addSchedule(name,this.account.name)
       .subscribe(schedule =>{
         if(schedule==undefined){
           alert("Schedule name already exists.")

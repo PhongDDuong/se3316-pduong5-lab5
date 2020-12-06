@@ -63,7 +63,7 @@ export class CourseService {
     }
   }
 
-  addSchedule(name: string): Observable<Schedule> {
+  addSchedule(name: string, creator: string): Observable<Schedule> {
     if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)){
       alert("invalid characters used");
     }
@@ -72,7 +72,9 @@ export class CourseService {
         schedule: name,
         subject: " ",
         catalog_nbr: " ",
+        creator: creator
       }
+      
       const url = `${this.scheduleUrl}/create/`;
       return this.http.post<Schedule>(url, postData).pipe(
         tap(_ => this.log(`added schedule id=${name}`)),

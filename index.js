@@ -74,7 +74,7 @@ app.post('/api/schedule/create', function (req, res) {
     schedule: req.body.schedule,
     subject: req.body.subject,
     catalog_nbr: req.body.catalog_nbr,
-    //creator: req.body.creator,
+    creator: req.body.creator
   }
   var existing = false;
 
@@ -104,6 +104,7 @@ app.post('/api/schedule/', function (req, res) {
       schedule: req.body.schedule,
       subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
       catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
+      creator: req.body.creator
     }
   }
   else{
@@ -111,6 +112,7 @@ app.post('/api/schedule/', function (req, res) {
       schedule: req.body.schedule,
       subject: req.body.subject,
       catalog_nbr: req.body.catalog_nbr,
+      creator: req.body.creator
     }
   }
 
@@ -356,6 +358,7 @@ function validateSchedule(schedule){
     schedule: Joi.string().required().min(1).max(20).regex(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/ , { invert: true }),
     subject: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
     catalog_nbr: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
+    creator: Joi.string().required().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
   };
 
   return result = Joi.validate(schedule, schema);
