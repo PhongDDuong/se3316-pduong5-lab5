@@ -133,16 +133,31 @@ app.post('/api/schedule/', function (req, res) {
     }
   }
 
-  else if(scheduleStore.get(req.body.schedule).subject!==" "){
-    var schedule = {
-      schedule: req.body.schedule,
-      subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
-      catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
-      creator: req.body.creator,
-      public: scheduleStore.get(req.body.schedule).public,
-      description: scheduleStore.get(req.body.schedule).description,
-      lastMod: new Date().getTime(),
-      lastModString:new Date().toLocaleString()
+  else if(scheduleStore.get(req.body.schedule).subject!==" "){///////////////////////////////fix
+    if(!(scheduleStore.get(req.body.schedule).subject.includes(req.body.subject))){
+      var schedule = {
+        schedule: req.body.schedule,
+        subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
+        catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
+        creator: req.body.creator,
+        public: scheduleStore.get(req.body.schedule).public,
+        description: scheduleStore.get(req.body.schedule).description,
+        lastMod: new Date().getTime(),
+        lastModString:new Date().toLocaleString()
+      }
+    }
+    
+    else{
+      var schedule = {
+        schedule: req.body.schedule,
+        subject: scheduleStore.get(req.body.schedule).subject,
+        catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr,
+        creator: req.body.creator,
+        public: scheduleStore.get(req.body.schedule).public,
+        description: scheduleStore.get(req.body.schedule).description,
+        lastMod: new Date().getTime(),
+        lastModString:new Date().toLocaleString()
+      }
     }
   }
   else{
@@ -162,7 +177,51 @@ app.post('/api/schedule/', function (req, res) {
   res.send(schedule);
 })
 
+//add course to schedule
+app.post('/api/schedule/remove', function (req, res) {
+  const { error } = validateSchedule(req.body); //result.error
+  if(error) return res.status(400).send(result.error.details[0].message);
+  var catnums = scheduleStore.get(req.body.schedule).catalog_nbr.split(",");
+  var subjects = scheduleStore.get(req.body.schedule).subject.split(",");
+  var found = false;
+  for(var i=0;i< subjects.length;i++){
+    if(catnums[i]==req.body.catalog_nbr&&subjects[i]==req.body.subject){
+      found = true;
+      catnums.splice(i,1);
+      subjects.splice(i,1);
 
+    }
+  }
+  if(scheduleStore.get(req.body.schedule).subject!==" "){
+    if(found){
+      var schedule = {
+        schedule: req.body.schedule,
+        subject: subjects.join(),
+        catalog_nbr: catnums.join(),
+        creator: req.body.creator,
+        public: scheduleStore.get(req.body.schedule).public,
+        description: scheduleStore.get(req.body.schedule).description,
+        lastMod: new Date().getTime(),
+        lastModString:new Date().toLocaleString()
+      }
+    }
+  }
+  else{
+    var schedule = {
+      schedule: req.body.schedule,
+      subject: req.body.subject,
+      catalog_nbr: req.body.catalog_nbr,
+      creator: req.body.creator,
+      public: scheduleStore.get(req.body.schedule).public,
+      description: scheduleStore.get(req.body.schedule).description,
+      lastMod: new Date().getTime(),
+      lastModString:new Date().toLocaleString()
+    }
+  }
+
+  scheduleStore.put(schedule.schedule,schedule);
+  res.send(schedule);
+})
 
 //delete all schedules
 app.delete('/api/schedule/all', function (req, res) {
