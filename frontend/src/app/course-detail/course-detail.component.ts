@@ -13,6 +13,7 @@ import { CourseService } from '../course.service';
 })
 export class CourseDetailComponent implements OnInit {
   @Input() course: Course;
+  account: Account;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,6 +23,11 @@ export class CourseDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCourse();
+    this.account = JSON.parse(localStorage.getItem('user'))
+  }
+
+  postReview(review: string): void{
+    console.log(review);
   }
 
   getCourse(): void {

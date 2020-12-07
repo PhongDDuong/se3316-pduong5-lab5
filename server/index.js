@@ -433,8 +433,8 @@ router.get('/', (req, res) => {
     }
     console.log(queryParameter.subject);
     for(course of courses){
-      if(queryParameter.subject.length>4){
-        if(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject)>0.25 && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component)){
+      if(queryParameter.subject.length>3){
+        if(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject)>0.4 && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component)){
           results.push(course);
         }
       }
