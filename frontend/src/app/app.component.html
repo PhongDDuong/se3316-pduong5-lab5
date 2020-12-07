@@ -9,8 +9,9 @@
   <a (click)="logout()" style="float: right;" *ngIf="account" >Logout</a>
   <a routerLink="/login" style="float: right;" *ngIf="!account" >Login</a>
   &nbsp;
-  <a routerLink="/accounts" style="float: right;" *ngIf="isAdmin()">Accounts</a>
+  <a routerLink="/accounts" style="float: right;" *ngIf="isAdmin()">All Accounts</a>
   &nbsp;
+  <a routerLink="/account/{{account.name}}" style="float: right;" *ngIf="account">My Account</a>
 </nav>
 <router-outlet></router-outlet>
 <!--<app-messages></app-messages>-->

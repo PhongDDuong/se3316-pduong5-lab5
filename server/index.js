@@ -486,22 +486,25 @@ app.post('/api/review/create', function (req, res) {
     var reviews = reviewsStore.get(req.body.subject+req.body.catalog_nbr).review;
     var names = reviewsStore.get(req.body.subject+req.body.catalog_nbr).names;
     var times = reviewsStore.get(req.body.subject+req.body.catalog_nbr).times;
+    var hidden = reviewsStore.get(req.body.subject+req.body.catalog_nbr).hidden;
   }
   else{
     var reviews = [];
     var names = [];
     var times = [];
+    var hidden = [];
   }
 
   reviews.push(req.body.review);
   names.push(req.body.name);
   times.push(new Date().toLocaleString());
-  //console.log(reviewStore.get(req.body.subject+req.body.catalog_nbr).review);
+  hidden.push(false);
 
   var review = {
     review: reviews,
     names: names,
-    times: times
+    times: times,
+    hidden: hidden,
   }
   reviewsStore.put(req.body.subject+req.body.catalog_nbr,review)
 

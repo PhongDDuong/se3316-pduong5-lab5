@@ -23,6 +23,20 @@ export class AccountDetailComponent implements OnInit {
   ngOnInit(): void {
     this.getAccount();
   }
+  
+  isAdmin(): boolean{
+    if(this.account){
+      if(this.account.admin=="true"){
+        return(true);
+      }
+      else{
+        return(false);
+      }
+    }
+    else{
+      return(false);
+    }
+  }
 
   getAccount(): void {
     const account = this.route.snapshot.paramMap.get('account');
