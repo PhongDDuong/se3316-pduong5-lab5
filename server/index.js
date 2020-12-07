@@ -7,7 +7,7 @@ const saltRounds = 10;
 const Joi = require('joi');
 var stringSimilarity = require('string-similarity');
 const app = express();
-
+const jwt = require('jsonwebtoken');
 
 
 app.use(express.json());
@@ -276,7 +276,7 @@ app.get('/api/account/:id', (req, res) => {
 });
 
 //get account when given email and password
-app.get('/api/account/:id/:id2', (req, res) => {
+app.post('/api/account/login', authenticateToken, (req, res) => {
   var accounts = [];
   var pass;
   var account;
@@ -287,7 +287,7 @@ app.get('/api/account/:id/:id2', (req, res) => {
   var found = false;
 
   for(i=0;i<accounts.length; i++) {
-    if(accounts[i].email===req.params.id){
+    if(accounts[i].email===req.body.email){
       pass = accounts[i].password;
       account = accounts[i];
       found = true;
@@ -295,10 +295,21 @@ app.get('/api/account/:id/:id2', (req, res) => {
     }
   }
 
-  bcrypt.compare(req.params.id2, pass, function(err, result) {
+  bcrypt.compare(req.body.password, pass, function(err, result) {
     if (result) {
       found = true;
-      res.send(account);
+
+
+      const user = {
+        name: account.name,
+        admin: account.admin,
+      }
+
+
+      const accessToken = jwt.sign(user, '8c14e9e532ee85716f59d11e696b705aecc52e75e56f0964aece2484bedf1b63bce460f88f2cb37c193a744f793f0190c63666283588612418c04713ff563701')
+
+
+      res.json({accessToken:accessToken, account:account});
     }
     else{
       res.send("not found");
@@ -575,6 +586,21 @@ function validateInput(course){
 
   return result = Joi.validate(course, schema);
 }
+
+function authenticateToken(req,res,next){
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if(token == null){
+    return res.sendStatus(401);
+  }
+  jwt.verify(token, '8c14e9e532ee85716f59d11e696b705aecc52e75e56f0964aece2484bedf1b63bce460f88f2cb37c193a744f793f0190c63666283588612418c04713ff563701', (err,user)=>{
+    if(err) return res.send(403);
+    req.user = user;
+    next()
+  })
+}
+
+
 
 //router
 app.use('/api/courses', router);

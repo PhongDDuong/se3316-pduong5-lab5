@@ -7,7 +7,6 @@ import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-import { stringify } from 'querystring';
 
 
 @Injectable({
@@ -234,8 +233,12 @@ export class CourseService {
   }
 
   loginAccount(email: string,password: string): Observable<Account> {
-    const url = `${this.accountUrl}/${email}/${password}`;
-    return this.http.get<Account>(url).pipe(
+    var postData = {
+      email: email,
+      password: password,
+    }
+    const url = `${this.accountUrl}/login`;
+    return this.http.post<Account>(url,postData).pipe(
       tap(_ => this.log(`fetched course=${email}`)),
       catchError(this.handleError<Account>(`getAccount =${email}`))
     );
