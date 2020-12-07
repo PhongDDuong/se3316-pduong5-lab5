@@ -344,36 +344,30 @@ router.get('/', (req, res) => {
   var queryParameter = req.query;
   var results = [];
 
-  /*
   //used in get courses when given paramters in a query
   if(Object.keys(queryParameter).length==0){
     res.send(courses);
   }
-  else if(Object.keys(queryParameter).length==1){
+
+  else if(Object.keys(queryParameter).length==3){
+    if(queryParameter.subject){
+      queryParameter.subject = queryParameter.subject.toLowerCase();
+    }
+    if(queryParameter.catalog_nbr){
+      queryParameter.catalog_nbr = queryParameter.catalog_nbr.toLowerCase();
+    }
+    if(queryParameter.ssr_component){
+      queryParameter.ssr_component = queryParameter.ssr_component.toLowerCase();
+    }
+    console.log(queryParameter.subject);
     for(course of courses){
-      if(course.subject.toLowerCase().includes(queryParameter.subject.toLowerCase())){
+      
+      if(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject)>0.25 && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component)){
         results.push(course);
       }
     }
     res.send(results);
   }
-
-  else if(Object.keys(queryParameter).length==2){
-    for(course of courses){
-      if(course.subject.toLowerCase().includes(queryParameter.subject.toLowerCase())&& course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr.toLowerCase())){
-        results.push(course);
-      }
-    }
-    res.send(results);
-  }*/
-
-    for(course of courses){
-      console.log(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject.toLowerCase()))
-      if(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject.toLowerCase())>.5 && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr.toLowerCase()) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component.toLowerCase())){
-        results.push(course);
-      }
-    }
-    res.send(results);
 
 });
 
