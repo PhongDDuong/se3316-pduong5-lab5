@@ -25,6 +25,7 @@ export class ScheduleDetailComponent implements OnInit {
   courses: Course[];
   matchingCourses = [];
   account: Account;
+  date: Date;
 
 
 

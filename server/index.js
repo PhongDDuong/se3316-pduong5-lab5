@@ -5,6 +5,7 @@ const Storage = require('node-storage');//backend storage
 const bcrypt = require ('bcrypt');
 const saltRounds = 10;
 const Joi = require('joi');
+var stringSimilarity = require('string-similarity');
 const app = express();
 
 
@@ -77,7 +78,8 @@ app.post('/api/schedule/create', function (req, res) {
     creator: req.body.creator,
     public: req.body.public,
     description: req.body.description,
-    lastMod: new Date().getTime()
+    lastMod: new Date().getTime(),
+    lastModString:new Date().toLocaleString()
   }
   var existing = false;
 
@@ -109,7 +111,8 @@ app.post('/api/schedule/', function (req, res) {
       creator: req.body.creator,
       public: scheduleStore.get(req.body.schedule).public,
       description: req.body.description,
-      lastMod: new Date().getTime()
+      lastMod: new Date().getTime(),
+      lastModString:new Date().toLocaleString()
     }
   }
 
@@ -121,7 +124,8 @@ app.post('/api/schedule/', function (req, res) {
       creator: req.body.creator,
       public: req.body.public,
       description: scheduleStore.get(req.body.schedule).description,
-      lastMod: new Date().getTime()
+      lastMod: new Date().getTime(),
+      lastModString:new Date().toLocaleString()
     }
   }
 
@@ -133,7 +137,8 @@ app.post('/api/schedule/', function (req, res) {
       creator: req.body.creator,
       public: scheduleStore.get(req.body.schedule).public,
       description: scheduleStore.get(req.body.schedule).description,
-      lastMod: new Date().getTime()
+      lastMod: new Date().getTime(),
+      lastModString:new Date().toLocaleString()
     }
   }
   else{
@@ -144,10 +149,10 @@ app.post('/api/schedule/', function (req, res) {
       creator: req.body.creator,
       public: scheduleStore.get(req.body.schedule).public,
       description: scheduleStore.get(req.body.schedule).description,
-      lastMod: new Date().getTime()
+      lastMod: new Date().getTime(),
+      lastModString:new Date().toLocaleString()
     }
   }
-  console.log(new Date().toLocaleString());
   //courses.push(course);
   scheduleStore.put(schedule.schedule,schedule);
   res.send(schedule);
@@ -339,6 +344,7 @@ router.get('/', (req, res) => {
   var queryParameter = req.query;
   var results = [];
 
+  /*
   //used in get courses when given paramters in a query
   if(Object.keys(queryParameter).length==0){
     res.send(courses);
@@ -359,16 +365,15 @@ router.get('/', (req, res) => {
       }
     }
     res.send(results);
-  }
+  }*/
 
-  else if(Object.keys(queryParameter).length==3){
     for(course of courses){
-      if(course.subject.toLowerCase().includes(queryParameter.subject.toLowerCase()) && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr.toLowerCase()) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component.toLowerCase())){
+      console.log(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject.toLowerCase()))
+      if(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject.toLowerCase())>.5 && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr.toLowerCase()) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component.toLowerCase())){
         results.push(course);
       }
     }
     res.send(results);
-  }
 
 });
 

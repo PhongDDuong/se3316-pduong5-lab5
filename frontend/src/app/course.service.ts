@@ -234,7 +234,7 @@ export class CourseService {
   }
 
   searchCourses(term: string): Observable<Course[]> {
-    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(term)){
+    if(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(term)){
       alert("invalid characters used");
     }
     else{

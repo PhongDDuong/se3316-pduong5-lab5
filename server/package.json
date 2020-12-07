@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "joi": "^13.1.0",
     "node-storage": "0.0.9",
-    "passport-google-oauth": "^2.0.0"
+    "passport-google-oauth": "^2.0.0",
+    "string-similarity": "^4.0.3"
   }
 }

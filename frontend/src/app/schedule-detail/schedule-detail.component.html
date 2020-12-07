@@ -10,6 +10,7 @@
 
     <h2>{{schedule.schedule| uppercase}} Courses</h2>
     <h3>Created By: {{schedule.creator}}</h3>
+    <h3>Last Modified: {{schedule.lastModString}}</h3>
     <h3>Public: {{schedule.public}}</h3>
     <button (click)="togglePublic()">Toggle Public/Private</button>
 
