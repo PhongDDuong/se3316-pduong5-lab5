@@ -134,7 +134,15 @@ app.post('/api/schedule/', function (req, res) {
   }
 
   else if(scheduleStore.get(req.body.schedule).subject!==" "){///////////////////////////////fix
-    if(!(scheduleStore.get(req.body.schedule).subject.includes(req.body.subject))){
+    var catnums = scheduleStore.get(req.body.schedule).catalog_nbr.split(",");
+    var subjects = scheduleStore.get(req.body.schedule).subject.split(",");
+    var found = false;
+    for(var i=0;i< subjects.length;i++){
+      if(catnums[i]==req.body.catalog_nbr&&subjects[i]==req.body.subject){
+        found = true;
+      }
+    }
+    if(!found){
       var schedule = {
         schedule: req.body.schedule,
         subject: scheduleStore.get(req.body.schedule).subject+","+req.body.subject,
@@ -415,6 +423,7 @@ router.get('/', (req, res) => {
   else if(Object.keys(queryParameter).length==3){
     if(queryParameter.subject){
       queryParameter.subject = queryParameter.subject.toLowerCase();
+      queryParameter.subject = queryParameter.subject.split(" ").join("")
     }
     if(queryParameter.catalog_nbr){
       queryParameter.catalog_nbr = queryParameter.catalog_nbr.toLowerCase();
@@ -424,9 +433,15 @@ router.get('/', (req, res) => {
     }
     console.log(queryParameter.subject);
     for(course of courses){
-      
-      if(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject)>0.25 && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component)){
-        results.push(course);
+      if(queryParameter.subject.length>4){
+        if(stringSimilarity.compareTwoStrings(course.subject.toLowerCase(), queryParameter.subject)>0.25 && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component)){
+          results.push(course);
+        }
+      }
+      else{
+        if(course.subject.toLowerCase().includes(queryParameter.subject) && course.catalog_nbr.toString().toLowerCase().includes(queryParameter.catalog_nbr) && course.course_info[0].ssr_component.toLowerCase().includes(queryParameter.ssr_component)){
+          results.push(course);
+        }
       }
     }
     res.send(results);
