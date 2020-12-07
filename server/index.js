@@ -14,7 +14,7 @@ app.use(express.json());
 
 var scheduleStore = new Storage('schedule');
 var accountStore = new Storage('accounts');
-var reviewStore = new Storage('reviews');
+var reviewsStore = new Storage('reviews');
 
 const port = process.env.Port || 3000;//port number
 
@@ -467,22 +467,45 @@ router.get('/:id/:id2', function (req, res) {
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////REVIEWS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//get details of a account when given a name
+
+//get review when given a name
 app.get('/api/review/:id', (req, res) => {
   const result = [];
-  if(reviewStore.get(req.params.id)){
-    result.push(reviewStore.get(req.params.id))
+  if(reviewsStore.get(req.params.id)){
+    result.push(reviewsStore.get(req.params.id))
   }
   res.send(result);
 });
 
-//create account
+//create review
 app.post('/api/review/create', function (req, res) {
   //const { error } = validateAccount(req.body); //result.error
   //if(error) return res.status(400).send(result.error.details[0].message);
 
-  reviewStore.put(req.body.name,"asd")
-  
+  if(reviewsStore.get(req.body.subject+req.body.catalog_nbr)){
+    var reviews = reviewsStore.get(req.body.subject+req.body.catalog_nbr).review;
+    var names = reviewsStore.get(req.body.subject+req.body.catalog_nbr).names;
+    var times = reviewsStore.get(req.body.subject+req.body.catalog_nbr).times;
+  }
+  else{
+    var reviews = [];
+    var names = [];
+    var times = [];
+  }
+
+  reviews.push(req.body.review);
+  names.push(req.body.name);
+  times.push(new Date().toLocaleString());
+  //console.log(reviewStore.get(req.body.subject+req.body.catalog_nbr).review);
+
+  var review = {
+    review: reviews,
+    names: names,
+    times: times
+  }
+  reviewsStore.put(req.body.subject+req.body.catalog_nbr,review)
+
+  res.send(reviewsStore.get(req.body.subject+req.body.catalog_nbr));
 })
 
 

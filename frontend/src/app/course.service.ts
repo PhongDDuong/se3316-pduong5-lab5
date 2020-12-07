@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Course } from './course';
 import { Schedule } from './schedule';
 import { Account } from './account';
+import { Review } from './review';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -256,25 +257,25 @@ export class CourseService {
     );
   }
 
-  addReview(subject: string,catalog_nbr: string,review: string): Observable<Schedule> {
+  addReview(subject: string,catalog_nbr: string,review: string, name: string): Observable<Review> {
     var postData = {
       subject: subject,
       catalog_nbr: catalog_nbr,
       review: review,
+      name: name,
     }
-
     const url = `${this.reviewUrl}/create/`;
-    return this.http.post<Schedule>(url, postData).pipe(
+    return this.http.post<Review>(url, postData).pipe(
       tap(_ => this.log(`added review`)),
-      catchError(this.handleError<Schedule>('review'))
+      catchError(this.handleError<Review>('review'))
     );
   }
 
-  getReview(subject: string,catalog_nbr: string): Observable<Course> {
+  getReview(subject: string,catalog_nbr: string): Observable<Review> {
     const url = `${this.reviewUrl}/${subject}${catalog_nbr}`;
-    return this.http.get<Course>(url).pipe(
-      tap(_ => this.log(`fetched course=${subject},${catalog_nbr}`)),
-      catchError(this.handleError<Course>(`getCourse =${catalog_nbr}`))
+    return this.http.get<Review>(url).pipe(
+      tap(_ => this.log(`fetched review`)),
+      catchError(this.handleError<Review>(`getReview =${catalog_nbr}`))
     );
   }
 
