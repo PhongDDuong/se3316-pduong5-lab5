@@ -37,7 +37,7 @@ app.use(function(req, res, next) {
 
 //makes courses with json file
 var newData = JSON.stringify(data)
-var coursesfromJSON = JSON.parse(newData);
+var courses = JSON.parse(newData);
 /*
 var courses = courseStore.get('courses');
 console.log(courses[0])*/
@@ -350,7 +350,7 @@ router.get('/', (req, res) => {
 
   //used in get courses when given paramters in a query
   if(Object.keys(queryParameter).length==0){
-    res.send(coursesfromJSON);
+    res.send(courses);
   }
 
   else if(Object.keys(queryParameter).length==3){
