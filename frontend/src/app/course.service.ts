@@ -16,6 +16,7 @@ export class CourseService {
   private coursesUrl = 'http://localhost:3000/api/courses';
   private scheduleUrl = 'http://localhost:3000/api/schedule';
   private accountUrl = 'http://localhost:3000/api/account';
+  private reviewUrl = 'http://localhost:3000/api/review';
 
 
   httpOptions = {
@@ -249,6 +250,28 @@ export class CourseService {
 
   getCourse(subject: string,catalog_nbr: string): Observable<Course> {
     const url = `${this.coursesUrl}/${subject}/${catalog_nbr}`;
+    return this.http.get<Course>(url).pipe(
+      tap(_ => this.log(`fetched course=${subject},${catalog_nbr}`)),
+      catchError(this.handleError<Course>(`getCourse =${catalog_nbr}`))
+    );
+  }
+
+  addReview(subject: string,catalog_nbr: string,review: string): Observable<Schedule> {
+    var postData = {
+      subject: subject,
+      catalog_nbr: catalog_nbr,
+      review: review,
+    }
+
+    const url = `${this.reviewUrl}/create/`;
+    return this.http.post<Schedule>(url, postData).pipe(
+      tap(_ => this.log(`added review`)),
+      catchError(this.handleError<Schedule>('review'))
+    );
+  }
+
+  getReview(subject: string,catalog_nbr: string): Observable<Course> {
+    const url = `${this.reviewUrl}/${subject}${catalog_nbr}`;
     return this.http.get<Course>(url).pipe(
       tap(_ => this.log(`fetched course=${subject},${catalog_nbr}`)),
       catchError(this.handleError<Course>(`getCourse =${catalog_nbr}`))

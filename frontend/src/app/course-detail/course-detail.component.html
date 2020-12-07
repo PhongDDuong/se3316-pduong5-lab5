@@ -51,10 +51,14 @@
 
     </tr>
   </table>
-
+  
   <div>
     <h2>Reviews:</h2>
-    <input #reviewBox id="box" placeholder="Enter Description"/>
+    <li *ngFor="let review of reviews">
+      {{review}}
+    </li>
+    <br>
+    <input #reviewBox id="box" placeholder="Enter Review"/>
     <br>
     <button (click)="postReview(reviewBox.value)"> Post Review</button>
 

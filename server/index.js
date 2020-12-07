@@ -14,7 +14,7 @@ app.use(express.json());
 
 var scheduleStore = new Storage('schedule');
 var accountStore = new Storage('accounts');
-//var courseStore = new Storage('courses');
+var reviewStore = new Storage('reviews');
 
 const port = process.env.Port || 3000;//port number
 
@@ -466,6 +466,27 @@ router.get('/:id/:id2', function (req, res) {
   res.send(course);
 });
 
+////////////////////////////////////////////////////////////////////////////////////////////REVIEWS///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//get details of a account when given a name
+app.get('/api/review/:id', (req, res) => {
+  const result = [];
+  if(reviewStore.get(req.params.id)){
+    result.push(reviewStore.get(req.params.id))
+  }
+  res.send(result);
+});
+
+//create account
+app.post('/api/review/create', function (req, res) {
+  //const { error } = validateAccount(req.body); //result.error
+  //if(error) return res.status(400).send(result.error.details[0].message);
+
+  reviewStore.put(req.body.name,"asd")
+  
+})
+
+
+////////////////////////////////////////////////////////////////////////////////////////////Validation///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //used for input sanitization
 function validateSchedule(schedule){
