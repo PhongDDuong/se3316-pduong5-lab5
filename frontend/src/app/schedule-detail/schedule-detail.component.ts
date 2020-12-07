@@ -101,6 +101,13 @@ export class ScheduleDetailComponent implements OnInit {
     
   }
 
+  removeCourse(subject: string,catalog_nbr: string): void {
+    const name = this.route.snapshot.paramMap.get('name');
+    this.courseService.updateSchedule(name,this.account.name,subject,catalog_nbr)
+      .subscribe();
+    this.refresh();
+  }
+
   getSchedule(): void {
     const name = this.route.snapshot.paramMap.get('name');
     this.courseService.getSchedule(name)

@@ -21,20 +21,31 @@ export class DashboardComponent implements OnInit {
   }
 
   addSchedule(name: string): void {
-    if(this.account){
-      this.courseService.addSchedule(name,this.account.name,"false"," ")
-      .subscribe(schedule =>{
-        if(schedule==undefined){
-          alert("Schedule name already exists.")
-        }
-        else{
-          this.refresh();
-        }
-      });
+    if(name==""){
+      alert("please enter a name for the schedule")
     }
     else{
-      alert("You must sign in to create a schedule")
+      if(this.accountSchedules.length<20){
+        if(this.account){
+          this.courseService.addSchedule(name,this.account.name,"false"," ")
+          .subscribe(schedule =>{
+            if(schedule==undefined){
+              alert("Schedule name already exists.")
+            }
+            else{
+              this.refresh();
+            }
+          });
+        }
+        else{
+          alert("You must sign in to create a schedule")
+        }
+      }
+      else{
+        alert("You have passed the max number of schedules")
+      }
     }
+
   }
 
   getSchedules(): void {
@@ -56,20 +67,17 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    var count2 = 0;
     for(var i = 0; i<this.schedules.length;i++){
       if(this.schedules[i].public=="true"){
         this.publicSchedules.push(this.schedules[i])
-        count2++;
-        if(count2>=10){
-          break;
-        }
        }
     }
 
     this.accountSchedules.sort(function(a, b){return b.lastMod - a.lastMod})
     this.publicSchedules.sort(function(a, b){return b.lastMod - a.lastMod})
     console.log(this.accountSchedules)
+
+    console.log(this.publicSchedules.length)
   }
 
   refresh(): void {

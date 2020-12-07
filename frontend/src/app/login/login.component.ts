@@ -37,6 +37,15 @@ export class LoginComponent implements OnInit {
       });
     }
   }
+
+  validateEmail(email: string): boolean {
+  if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email))
+    {
+      return (true)
+    }
+      alert("You have entered an invalid email address!")
+      return (false)
+  }
   
   loginAccount(email: string,password: string): void {
     if(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/.test(email)||/[` !@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(password)){
@@ -46,10 +55,12 @@ export class LoginComponent implements OnInit {
       email="support@gmail.com";
     }
 
-    if(email===""||password===""){
+    if(email==="" && password===""){
       alert("Please enter required fields")
     }
-    else if(email===""){
+    else if(email===""|| !this.validateEmail(email)){
+      console.log(this.validateEmail(email));
+      console.log(email);
       alert("Please enter a valid email")
     }
     else if(password===""){

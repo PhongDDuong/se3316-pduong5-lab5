@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 //import { ScheduleDetailComponent } from '../schedule-detail/schedule-detail.component';
@@ -19,15 +18,11 @@ import { CourseService } from '../course.service';
 })
 export class CourseSearchComponent implements OnInit {
   courses$: Observable<Course[]>;
-  postData ={};
   account: Account;
-
-  
-  private scheduleUrl = 'http://localhost:3000/api/schedule';
 
   private searchTerms = new Subject<string>();
 
-  constructor(private courseService: CourseService, private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private courseService: CourseService, private route: ActivatedRoute) {}
 
   // Push a search term into the observable stream.
   search(term: string): void {
@@ -35,19 +30,6 @@ export class CourseSearchComponent implements OnInit {
   }
 
   updateSchedule(subject: string,catalog_nbr: string): void {
-    /*
-    const name = this.route.snapshot.paramMap.get('name');
-    this.postData = {
-      schedule: name,
-      subject: subject,
-      catalog_nbr: catalog_nbr,
-      creator: this.account.name,
-      public: publicStatus,
-      description: description,
-    }
-    this.http.post(this.scheduleUrl,this.postData).toPromise().then(data => {
-      console.log(data);
-    });*/
     const name = this.route.snapshot.paramMap.get('name');
     this.courseService.updateSchedule(name,this.account.name,subject,catalog_nbr)
       .subscribe();

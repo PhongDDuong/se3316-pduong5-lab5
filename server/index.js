@@ -14,6 +14,7 @@ app.use(express.json());
 
 var scheduleStore = new Storage('schedule');
 var accountStore = new Storage('accounts');
+//var courseStore = new Storage('courses');
 
 const port = process.env.Port || 3000;//port number
 
@@ -36,7 +37,10 @@ app.use(function(req, res, next) {
 
 //makes courses with json file
 var newData = JSON.stringify(data)
-const courses = JSON.parse(newData);
+var coursesfromJSON = JSON.parse(newData);
+/*
+var courses = courseStore.get('courses');
+console.log(courses[0])*/
 
 //frontend
 app.use('/', express.static('static'));
@@ -346,7 +350,7 @@ router.get('/', (req, res) => {
 
   //used in get courses when given paramters in a query
   if(Object.keys(queryParameter).length==0){
-    res.send(courses);
+    res.send(coursesfromJSON);
   }
 
   else if(Object.keys(queryParameter).length==3){
@@ -371,6 +375,12 @@ router.get('/', (req, res) => {
 
 });
 
+//add courses to database
+router.get('/create', (req, res) => {
+  //courseStore.put('courses',coursesfromJSON);
+  //res.send(courseStore.get('courses'));
+
+});
 
 //get one course using id
 router.get('/:id/:id2', function (req, res) {
