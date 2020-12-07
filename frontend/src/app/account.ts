@@ -3,5 +3,7 @@ export interface Account {
     email: string;
     password: string;
     admin: string;
+    accessToken: string;
+    account: string;
     activated: string;
   }
