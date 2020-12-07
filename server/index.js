@@ -53,7 +53,7 @@ app.get('/api/schedule', (req, res) => {
   const result = [];
 
   for(schedule in scheduleStore.store) {
-    result.push(schedule);
+    result.push(scheduleStore.get(schedule));
   }
   res.send(result);
 });
@@ -138,8 +138,8 @@ app.post('/api/schedule/', function (req, res) {
       subject: req.body.subject,
       catalog_nbr: req.body.catalog_nbr,
       creator: req.body.creator,
-      public: req.body.public,
-      description: req.body.description
+      public: scheduleStore.get(req.body.schedule).public,
+      description: scheduleStore.get(req.body.schedule).description
     }
   }
 

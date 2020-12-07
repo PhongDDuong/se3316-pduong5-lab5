@@ -9,6 +9,8 @@ import { CourseService } from '../course.service';
 })
 export class DashboardComponent implements OnInit {
   schedules: Schedule[] = [];
+  accountSchedules: Schedule[] = [];
+  publicSchedules: Schedule[] = [];
   account: Account;
 
   constructor(private courseService: CourseService) { }
@@ -37,7 +39,35 @@ export class DashboardComponent implements OnInit {
 
   getSchedules(): void {
     this.courseService.getSchedules()
-      .subscribe(schedules => this.schedules = schedules);
+      .subscribe(schedules => {
+        this.schedules = schedules;
+        this.filterSchedules();
+      });
+
+  }
+
+  filterSchedules(): void {
+    
+    if(this.account){
+      for(var i = 0; i<this.schedules.length;i++){
+        if(this.schedules[i].creator==this.account.name){
+          this.accountSchedules.push(this.schedules[i])
+        }
+      }
+    }
+
+    var count2 = 0;
+    for(var i = 0; i<this.schedules.length;i++){
+      if(this.schedules[i].public=="true"){
+        this.publicSchedules.push(this.schedules[i])
+        count2++;
+        if(count2>=10){
+          break;
+        }
+       }
+    }
+
+    console.log(this.accountSchedules)
   }
 
   refresh(): void {

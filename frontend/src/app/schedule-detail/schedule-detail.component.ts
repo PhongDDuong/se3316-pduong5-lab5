@@ -53,8 +53,8 @@ export class ScheduleDetailComponent implements OnInit {
       else{
         state = "false";
       }
-      
-      this.courseService.updateScheduleDesc(this.schedule.schedule,this.account.name,state)
+      console.log(state)
+      this.courseService.updateSchedulePub(this.schedule.schedule,this.account.name,state)
       .subscribe();
       this.refresh();
     }
