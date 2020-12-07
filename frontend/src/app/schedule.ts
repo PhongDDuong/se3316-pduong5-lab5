@@ -6,5 +6,6 @@ export interface Schedule {
     owner: string;
     description: string;
     public: string;
+    lastMod: number;
   }
   

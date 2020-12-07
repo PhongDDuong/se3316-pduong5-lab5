@@ -76,7 +76,8 @@ app.post('/api/schedule/create', function (req, res) {
     catalog_nbr: req.body.catalog_nbr,
     creator: req.body.creator,
     public: req.body.public,
-    description: req.body.description
+    description: req.body.description,
+    lastMod: new Date().getTime()
   }
   var existing = false;
 
@@ -108,6 +109,7 @@ app.post('/api/schedule/', function (req, res) {
       creator: req.body.creator,
       public: scheduleStore.get(req.body.schedule).public,
       description: req.body.description,
+      lastMod: new Date().getTime()
     }
   }
 
@@ -119,6 +121,7 @@ app.post('/api/schedule/', function (req, res) {
       creator: req.body.creator,
       public: req.body.public,
       description: scheduleStore.get(req.body.schedule).description,
+      lastMod: new Date().getTime()
     }
   }
 
@@ -129,7 +132,8 @@ app.post('/api/schedule/', function (req, res) {
       catalog_nbr: scheduleStore.get(req.body.schedule).catalog_nbr+","+req.body.catalog_nbr,
       creator: req.body.creator,
       public: scheduleStore.get(req.body.schedule).public,
-      description: scheduleStore.get(req.body.schedule).description
+      description: scheduleStore.get(req.body.schedule).description,
+      lastMod: new Date().getTime()
     }
   }
   else{
@@ -139,10 +143,11 @@ app.post('/api/schedule/', function (req, res) {
       catalog_nbr: req.body.catalog_nbr,
       creator: req.body.creator,
       public: scheduleStore.get(req.body.schedule).public,
-      description: scheduleStore.get(req.body.schedule).description
+      description: scheduleStore.get(req.body.schedule).description,
+      lastMod: new Date().getTime()
     }
   }
-
+  console.log(new Date().toLocaleString());
   //courses.push(course);
   scheduleStore.put(schedule.schedule,schedule);
   res.send(schedule);

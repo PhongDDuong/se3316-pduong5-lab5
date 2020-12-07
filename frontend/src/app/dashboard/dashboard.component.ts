@@ -67,6 +67,8 @@ export class DashboardComponent implements OnInit {
        }
     }
 
+    this.accountSchedules.sort(function(a, b){return b.lastMod - a.lastMod})
+    this.publicSchedules.sort(function(a, b){return b.lastMod - a.lastMod})
     console.log(this.accountSchedules)
   }
 
