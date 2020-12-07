@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import { stringify } from 'querystring';
 
 
 @Injectable({
@@ -276,6 +277,21 @@ export class CourseService {
     return this.http.get<Review>(url).pipe(
       tap(_ => this.log(`fetched review`)),
       catchError(this.handleError<Review>(`getReview =${catalog_nbr}`))
+    );
+  }
+
+  hideReview(subject: string,catalog_nbr: string,review: string, name: string, time:string): Observable<Review> {
+    var postData = {
+      subject: subject,
+      catalog_nbr: catalog_nbr,
+      review: review,
+      name: name,
+      time: time,
+    }
+    const url = `${this.reviewUrl}/hidden/`;
+    return this.http.post<Review>(url, postData).pipe(
+      tap(_ => this.log(`added review`)),
+      catchError(this.handleError<Review>('review'))
     );
   }
 

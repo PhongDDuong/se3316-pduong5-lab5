@@ -511,6 +511,33 @@ app.post('/api/review/create', function (req, res) {
   res.send(reviewsStore.get(req.body.subject+req.body.catalog_nbr));
 })
 
+//create review
+app.post('/api/review/hidden', function (req, res) {
+  //const { error } = validateAccount(req.body); //result.error
+  //if(error) return res.status(400).send(result.error.details[0].message);
+  var reviews = reviewsStore.get(req.body.subject+req.body.catalog_nbr).review;
+  var names = reviewsStore.get(req.body.subject+req.body.catalog_nbr).names;
+  var times = reviewsStore.get(req.body.subject+req.body.catalog_nbr).times;
+  var hidden = reviewsStore.get(req.body.subject+req.body.catalog_nbr).hidden;
+
+  for(var i = 0; i< reviews.length;i++){
+    if(reviews[i]==req.body.review && names[i]== req.body.name && times[i]==req.body.time){
+      console.log("asdasdnaklfjgasoikgoaishgaoigoai")
+      hidden[i]=!hidden[i];
+    }
+  }
+
+  var review = {
+    review: reviews,
+    names: names,
+    times: times,
+    hidden: hidden,
+  }
+  reviewsStore.put(req.body.subject+req.body.catalog_nbr,review)
+
+  res.send(reviewsStore.get(req.body.subject+req.body.catalog_nbr));
+})
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////Validation///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

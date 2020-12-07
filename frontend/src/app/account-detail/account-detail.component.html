@@ -13,7 +13,7 @@
   <button (click)="activateAccount(account.name,account.email,account.password,account.admin,account.activated)" *ngIf="isAdmin()">Activate/Deactivate</button>
   <br>
   <br>
-  <input #searchBox id="search-box" placeholder="New Password"/>
+  <input #searchBox type="password" id="search-box" placeholder="New Password"/>
   &nbsp;
   <button (click)="updatePassword(account.name,account.email,searchBox.value,account.admin,account.activated)">Update Password</button>
 </div>

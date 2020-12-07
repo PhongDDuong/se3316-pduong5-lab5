@@ -1,12 +1,12 @@
 <div *ngIf="course">
     <button (click)="goBack()">go back</button>
     <h2>{{course.subject | uppercase}} {{course.catalog_nbr}} Details</h2>
-    <div><span>-descrlong: </span>{{course.course_info[0].descrlong}}</div>
+    <div>{{course.course_info[0].descrlong}}</div>
 
     <h3>Course Description: </h3>
-    {{course.catalog_description}}
-    <br>
     {{course.course_info[0].descr}}
+    <br>
+    {{course.catalog_description}}
     <br>
   <table>
     <tr>
@@ -54,9 +54,19 @@
   
   <div>
     <h2>Reviews:</h2>
-    <li *ngFor="let review of reviews">
-      {{review}}
-    </li>
+    <table>
+      <tr>
+        <th>Poster</th>
+        <th>Review</th>
+        <th>Time:</th>
+      </tr>
+      <tr *ngFor="let review of reviews">
+        <td>{{review.creator}}</td>
+        <td>{{review.review}}</td>
+        <td>{{review.lastModString}}</td>
+        <td *ngIf="isAdmin()"><button (click)="hideReview(review.creator,review.review,review.lastModString)"> Hide Review</button> Hidden: {{review.hidden}}</td>
+      </tr>
+    </table>
     <br>
     <input #reviewBox id="box" placeholder="Enter Review"/>
     <br>
