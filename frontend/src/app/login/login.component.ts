@@ -69,18 +69,22 @@ export class LoginComponent implements OnInit {
     else{
       this.courseService.loginAccount(email,password)
       .subscribe(account => {
+        console.log(account);
+        var token = account[0];
+        var user = account[1];
         if(account==undefined){
           alert("Wrong email or password")
         }
 
-        else if(account.activated==="false"){
+        else if(user.activated==="false"){
           alert("Account has been deactivated. Please contact support@gmail.com to reactivate account.")
         }
 
         else{
-          this.account = account;
+          this.account = user;
           //alert(this.account.name+" has signed in");
-          localStorage.setItem('user',JSON.stringify(account))
+          localStorage.setItem('user',JSON.stringify(user))
+          localStorage.setItem('token',token)
           this.refresh();
           
           //this.goBack();

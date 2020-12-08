@@ -269,7 +269,7 @@ app.get('/api/account', (req, res) => {
 });
 
 //get details of a account when given a name
-app.get('/api/account/:id', (req, res) => {
+app.get('/api/account/:id', authenticateToken, (req, res) => {
   const result = [];
   result.push(accountStore.get(req.params.id))
   res.send(result);
@@ -309,7 +309,7 @@ app.post('/api/account/login', (req, res) => {
       const accessToken = jwt.sign(user, '8c14e9e532ee85716f59d11e696b705aecc52e75e56f0964aece2484bedf1b63bce460f88f2cb37c193a744f793f0190c63666283588612418c04713ff563701')
 
 
-      res.send(account);
+      res.send([accessToken,account]);
     }
     else{
       res.send("not found");
