@@ -9,6 +9,9 @@ var stringSimilarity = require('string-similarity');
 const app = express();
 const jwt = require('jsonwebtoken');
 
+var cors = require('cors')
+app.use(cors())
+app.options('*', cors())
 
 app.use(express.json());
 
@@ -22,14 +25,14 @@ app.use(express.static('static/frontend'));
 
 router.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Headers, Access-Control-Request-Method, Access-Control-Request-Headers");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   next();
 });
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Headers, Access-Control-Request-Method, Access-Control-Request-Headers");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   next();
 });
@@ -71,7 +74,7 @@ app.get('/api/schedule/:id', (req, res) => {
 });
 
 //create schedule
-app.post('/api/schedule/create', function (req, res) {
+app.post('/api/schedule/create', authenticateToken,function (req, res) {
   const { error } = validateSchedule(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
   
@@ -103,7 +106,7 @@ app.post('/api/schedule/create', function (req, res) {
 })
 
 //add course to schedule
-app.post('/api/schedule/', function (req, res) {
+app.post('/api/schedule/', authenticateToken,function (req, res) {
   const { error } = validateSchedule(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
   
@@ -185,8 +188,8 @@ app.post('/api/schedule/', function (req, res) {
   res.send(schedule);
 })
 
-//add course to schedule
-app.post('/api/schedule/remove', function (req, res) {
+//remove course to schedule
+app.post('/api/schedule/remove', authenticateToken,function (req, res) {
   const { error } = validateSchedule(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
   var catnums = scheduleStore.get(req.body.schedule).catalog_nbr.split(",");
@@ -232,7 +235,7 @@ app.post('/api/schedule/remove', function (req, res) {
 })
 
 //delete all schedules
-app.delete('/api/schedule/all', function (req, res) {
+app.delete('/api/schedule/all', authenticateToken,function (req, res) {
   for(schedule in scheduleStore.store) {
     scheduleStore.remove(schedule);
   }
@@ -240,13 +243,13 @@ app.delete('/api/schedule/all', function (req, res) {
 });
 
 //delete a schedule when given its name in url
-app.delete('/api/schedule/:id', function (req, res) {
+app.delete('/api/schedule/:id', authenticateToken,function (req, res) {
   scheduleStore.remove(req.params.id);
   res.send("deleted");
 });
 
 //delete a schedule when given its name
-app.delete('/api/schedule/', function (req, res) {
+app.delete('/api/schedule/', authenticateToken,function (req, res) {
   const { error } = validateInput(req.body); //result.error
 
   if(error) return res.status(400).send(result.error.details[0].message);
@@ -359,7 +362,7 @@ app.post('/api/account/create', function (req, res) {
 })
 
 //change details to account
-app.post('/api/account', function (req, res) {
+app.post('/api/account', authenticateToken,function (req, res) {
   const { error } = validateAccount(req.body); //result.error
   if(error) return res.status(400).send(result.error.details[0].message);
   
@@ -393,7 +396,7 @@ app.post('/api/account', function (req, res) {
 
 
 //delete all accounts
-app.delete('/api/account/all', function (req, res) {
+app.delete('/api/account/all', authenticateToken,function (req, res) {
   for(account in accountStore.store) {
     accountStore.remove(account);
   }
@@ -401,7 +404,7 @@ app.delete('/api/account/all', function (req, res) {
 });
 
 //delete a schedule when given its name in url
-app.delete('/api/account/:id', function (req, res) {
+app.delete('/api/account/:id', authenticateToken,function (req, res) {
   accountStore.remove(req.params.id);
   res.send("deleted");
 });
@@ -489,7 +492,7 @@ app.get('/api/review/:id', (req, res) => {
 });
 
 //create review
-app.post('/api/review/create', function (req, res) {
+app.post('/api/review/create', authenticateToken,function (req, res) {
   //const { error } = validateAccount(req.body); //result.error
   //if(error) return res.status(400).send(result.error.details[0].message);
 
@@ -523,7 +526,7 @@ app.post('/api/review/create', function (req, res) {
 })
 
 //create review
-app.post('/api/review/hidden', function (req, res) {
+app.post('/api/review/hidden', authenticateToken,function (req, res) {
   //const { error } = validateAccount(req.body); //result.error
   //if(error) return res.status(400).send(result.error.details[0].message);
   var reviews = reviewsStore.get(req.body.subject+req.body.catalog_nbr).review;

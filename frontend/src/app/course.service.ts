@@ -18,10 +18,11 @@ export class CourseService {
   private scheduleUrl = 'http://localhost:3000/api/schedule';
   private accountUrl = 'http://localhost:3000/api/account';
   private reviewUrl = 'http://localhost:3000/api/review';
+  
 
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Authorization': 'Bearer '+localStorage.getItem('token')})
   };
 
   /*
@@ -80,7 +81,7 @@ export class CourseService {
       }
 
       const url = `${this.scheduleUrl}/create/`;
-      return this.http.post<Schedule>(url, postData).pipe(
+      return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
         tap(_ => this.log(`added schedule id=${name}`)),
         catchError(this.handleError<Schedule>('deleteSchedule'))
       );
@@ -102,7 +103,7 @@ export class CourseService {
       }
 
       const url = `${this.scheduleUrl}`;
-      return this.http.post<Schedule>(url, postData).pipe(
+      return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
         tap(_ => this.log(`added schedule id=${name}`)),
         catchError(this.handleError<Schedule>('deleteSchedule'))
       );
@@ -124,7 +125,7 @@ export class CourseService {
       }
 
       const url = `${this.scheduleUrl}/remove`;
-      return this.http.post<Schedule>(url, postData).pipe(
+      return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
         tap(_ => this.log(`added schedule id=${name}`)),
         catchError(this.handleError<Schedule>('deleteSchedule'))
       );
@@ -146,7 +147,7 @@ export class CourseService {
       }
 
       const url = `${this.scheduleUrl}`;
-      return this.http.post<Schedule>(url, postData).pipe(
+      return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
         tap(_ => this.log(`added schedule id=${name}`)),
         catchError(this.handleError<Schedule>('deleteSchedule'))
       );
@@ -168,7 +169,7 @@ export class CourseService {
       }
 
       const url = `${this.scheduleUrl}`;
-      return this.http.post<Schedule>(url, postData).pipe(
+      return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
         tap(_ => this.log(`added schedule id=${name}`)),
         catchError(this.handleError<Schedule>('deleteSchedule'))
       );
@@ -193,7 +194,7 @@ export class CourseService {
     }
 
     const url = `${this.accountUrl}/create/`;
-    return this.http.post<Schedule>(url, postData).pipe(
+    return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
       tap(_ => this.log(`added schedule id=${name}`)),
       catchError(this.handleError<Schedule>('deleteSchedule'))
     );
@@ -209,7 +210,7 @@ export class CourseService {
     }
 
     const url = `${this.accountUrl}`;
-    return this.http.post<Schedule>(url, postData).pipe(
+    return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
       tap(_ => this.log(`added schedule id=${name}`)),
       catchError(this.handleError<Schedule>('deleteSchedule'))
     );
@@ -226,7 +227,7 @@ export class CourseService {
 
   getAccount(account: string): Observable<Account> {
     const url = `${this.accountUrl}/${account}`;
-    return this.http.get<Account>(url).pipe(
+    return this.http.get<Account>(url,this.httpOptions).pipe(
       tap(_ => this.log(`fetched course=${account}`)),
       catchError(this.handleError<Account>(`getAccount =${account}`))
     );
@@ -269,7 +270,7 @@ export class CourseService {
       name: name,
     }
     const url = `${this.reviewUrl}/create/`;
-    return this.http.post<Review>(url, postData).pipe(
+    return this.http.post<Review>(url, postData,this.httpOptions).pipe(
       tap(_ => this.log(`added review`)),
       catchError(this.handleError<Review>('review'))
     );
@@ -292,7 +293,7 @@ export class CourseService {
       time: time,
     }
     const url = `${this.reviewUrl}/hidden/`;
-    return this.http.post<Review>(url, postData).pipe(
+    return this.http.post<Review>(url, postData,this.httpOptions).pipe(
       tap(_ => this.log(`added review`)),
       catchError(this.handleError<Review>('review'))
     );
@@ -317,6 +318,15 @@ export class CourseService {
       );
     }
   }
+
+  /*intercept(req: HttpRequest<any>, next: HttpHandler) {
+      const authToken = this.authService.getToken();
+      const authReq = req.clone({
+          headers: req.headers.set("Authorize", authToken)
+      });
+
+      return next.handle(authReq);
+  }*/
 
   private log(message: string) {
     this.messageService.add(`CourseService: ${message}`);
