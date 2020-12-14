@@ -14,10 +14,11 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class CourseService {
 
-  private coursesUrl = 'http://localhost:3000/api/courses';
-  private scheduleUrl = 'http://localhost:3000/api/schedule';
-  private accountUrl = 'http://localhost:3000/api/account';
-  private reviewUrl = 'http://localhost:3000/api/review';
+  private coursesUrl = 'api/courses';
+  private scheduleUrl = 'api/schedule';
+  private accountUrl = 'api/account';
+  private reviewUrl = 'api/review';
+  private pageUrl = 'api/page';
   
 
 
@@ -155,7 +156,7 @@ export class CourseService {
   }
 
   updateScheduleDesc(name: string, creator: string,description: string): Observable<Schedule> {
-    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)){
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(name)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(creator)||/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(description)){
       alert("invalid characters used");
     }
     else{
@@ -200,20 +201,25 @@ export class CourseService {
     );
   }
 
-  updateAccount(name: String,email: String,password: String,admin: String,activated: String): Observable<Schedule> {
-    var postData = {
-      name: name,
-      email: email,
-      password: password,
-      admin: admin,
-      activated: activated,
+  updateAccount(name: string,email: string,password: string,admin: string,activated: string): Observable<Schedule> {
+    if(/[`!@#%^&*()_+\-=\[\]{};':"\\|<>\?~]/.test(password)){
+      alert("invalid characters used");
     }
-
-    const url = `${this.accountUrl}`;
-    return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
-      tap(_ => this.log(`added schedule id=${name}`)),
-      catchError(this.handleError<Schedule>('deleteSchedule'))
-    );
+    else{
+      var postData = {
+        name: name,
+        email: email,
+        password: password,
+        admin: admin,
+        activated: activated,
+      }
+  
+      const url = `${this.accountUrl}`;
+      return this.http.post<Schedule>(url, postData,this.httpOptions).pipe(
+        tap(_ => this.log(`added schedule id=${name}`)),
+        catchError(this.handleError<Schedule>('deleteSchedule'))
+      );
+    }
   }
 
   getAccounts(): Observable<[]> {
@@ -263,17 +269,22 @@ export class CourseService {
   }
 
   addReview(subject: string,catalog_nbr: string,review: string, name: string): Observable<Review> {
-    var postData = {
-      subject: subject,
-      catalog_nbr: catalog_nbr,
-      review: review,
-      name: name,
+    if(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/.test(review)){
+      alert("invalid characters used");
     }
-    const url = `${this.reviewUrl}/create/`;
-    return this.http.post<Review>(url, postData,this.httpOptions).pipe(
-      tap(_ => this.log(`added review`)),
-      catchError(this.handleError<Review>('review'))
-    );
+    else{
+      var postData = {
+        subject: subject,
+        catalog_nbr: catalog_nbr,
+        review: review,
+        name: name,
+      }
+      const url = `${this.reviewUrl}/create/`;
+      return this.http.post<Review>(url, postData,this.httpOptions).pipe(
+        tap(_ => this.log(`added review`)),
+        catchError(this.handleError<Review>('review'))
+      );
+    }
   }
 
   getReview(subject: string,catalog_nbr: string): Observable<Review> {
@@ -317,6 +328,14 @@ export class CourseService {
         catchError(this.handleError<Course[]>('searchCourses', []))
       );
     }
+  }
+
+  getPage(page: string): Observable<object> {
+    const url = `${this.pageUrl}/${page}`;
+    return this.http.get<object>(url).pipe(
+      tap(_ => this.log(`fetched page=${page}`)),
+      catchError(this.handleError<object>(`getPage =${page}`))
+    );
   }
 
   /*intercept(req: HttpRequest<any>, next: HttpHandler) {

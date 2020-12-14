@@ -25,14 +25,22 @@ export class LoginComponent implements OnInit {
       alert("invalid characters used");
     }
 
-    if(name===""|| email===""||password===""){
+    else if(name===""|| email===""||password===""){
       alert("missing input(s)")
     }
+
+    else if(!this.validateEmail(email)){
+      alert("invalid email");
+    }
+
     else{
       this.courseService.addAccount(name,email,password,"false","true")
       .subscribe(account => {
         if(account==undefined){
           alert("An account with that email already exists")
+        }
+        else{
+          this.refresh();
         }
       });
     }
@@ -43,7 +51,6 @@ export class LoginComponent implements OnInit {
     {
       return (true)
     }
-      alert("You have entered an invalid email address!")
       return (false)
   }
   
@@ -59,7 +66,6 @@ export class LoginComponent implements OnInit {
       alert("Please enter required fields")
     }
     else if(email===""|| !this.validateEmail(email)){
-      console.log(this.validateEmail(email));
       console.log(email);
       alert("Please enter a valid email")
     }
@@ -70,24 +76,29 @@ export class LoginComponent implements OnInit {
       this.courseService.loginAccount(email,password)
       .subscribe(account => {
         console.log(account);
-        var token = account[0];
-        var user = account[1];
         if(account==undefined){
           alert("Wrong email or password")
         }
 
-        else if(user.activated==="false"){
-          alert("Account has been deactivated. Please contact support@gmail.com to reactivate account.")
-        }
+        
 
         else{
-          this.account = user;
-          //alert(this.account.name+" has signed in");
-          localStorage.setItem('user',JSON.stringify(user))
-          localStorage.setItem('token',token)
-          this.refresh();
-          
-          //this.goBack();
+          var token = account[0];
+          var user = account[1];
+
+          if(user.activated==="false"){
+            alert("Account has been deactivated. Please contact support@gmail.com to reactivate account.")
+          }
+
+          else{
+            this.account = user;
+            //alert(this.account.name+" has signed in");
+            localStorage.setItem('user',JSON.stringify(user))
+            localStorage.setItem('token',token)
+            this.refresh();
+            
+            //this.goBack();
+          }
         }
       });
     }

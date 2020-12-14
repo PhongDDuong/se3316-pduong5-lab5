@@ -36,7 +36,7 @@ export class ScheduleDetailComponent implements OnInit {
 
   checkOwner(): boolean{
     if(this.account){
-      if(this.account.name == this.schedule.creator|| this.account.admin == "true"){
+      if(this.account.name == this.schedule.creator){
         return(true);
       }
       else{
@@ -69,7 +69,7 @@ export class ScheduleDetailComponent implements OnInit {
     if(this.checkOwner()){
       console.log(input);
       this.courseService.updateScheduleDesc(this.schedule.schedule,this.account.name,input)
-      .subscribe();
+      .subscribe(result => console.log(result));
       this.refresh();
     }
     else{

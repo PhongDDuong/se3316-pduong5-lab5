@@ -19,11 +19,10 @@ export class CourseSearchBasicComponent implements OnInit {
 
   courses$: Observable<Course[]>;
   postData ={};
-  private scheduleUrl = 'http://localhost:3000/api/schedule';
 
   private searchTerms = new Subject<string>();
 
-  constructor(private courseService: CourseService, private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private courseService: CourseService) {}
 
   // Push a search term into the observable stream.
   search(term: string): void {

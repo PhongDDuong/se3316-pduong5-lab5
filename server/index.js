@@ -1,6 +1,8 @@
 const express = require('express');
 var router = express.Router();
 const data = require("./Lab3-timetable-data.json");//json file containing courses
+
+
 const Storage = require('node-storage');//backend storage
 const bcrypt = require ('bcrypt');
 const saltRounds = 10;
@@ -18,6 +20,7 @@ app.use(express.json());
 var scheduleStore = new Storage('schedule');
 var accountStore = new Storage('accounts');
 var reviewsStore = new Storage('reviews');
+var pageStore = new Storage('pages');
 
 const port = process.env.Port || 3000;//port number
 
@@ -551,6 +554,29 @@ app.post('/api/review/hidden', authenticateToken,function (req, res) {
 
   res.send(reviewsStore.get(req.body.subject+req.body.catalog_nbr));
 })
+////////////////////////////////////////////////////////////////////////////////////////////pages///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//get page text
+app.get('/api/page/:id', (req, res) => {
+  res.send([pageStore.get(req.params.id)]);
+});
+
+//update page text
+app.post('/api/page/create', function (req, res) {
+  pageStore.put(req.body.page,req.body.text)
+
+  res.send(reviewsStore.get(req.body.page));
+})
+
+
+
+
+
+
+
+
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////Validation///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -573,7 +599,7 @@ function validateAccount(account){
   const schema = {
     name: Joi.string().required().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
     email: Joi.string().required().email().regex(/[`!#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/ , { invert: true }),
-    password: Joi.string().required().regex(/[`!@#%^&*()_+\-=\[\]{};':"\\|.<>\?~]/ , { invert: true }),
+    password: Joi.string().required().regex(/[`!@#%^&*()_+\-=\[\]{};':"\\|<>\?~]/ , { invert: true }),
     admin: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
     activated: Joi.string().required().regex(/[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/ , { invert: true }),
   };

@@ -19,6 +19,8 @@ import { LoginComponent } from './login/login.component';
 import { CourseSearchBasicComponent } from './course-search-basic/course-search-basic.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { AccountDetailComponent } from './account-detail/account-detail.component';
+import { FooterComponent } from './footer/footer.component';
+import { InfopageComponent } from './infopage/infopage.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { AccountDetailComponent } from './account-detail/account-detail.componen
     CourseSearchBasicComponent,
     AccountsComponent,
     AccountDetailComponent,
+    FooterComponent,
+    InfopageComponent,
   ],
   imports: [
     BrowserModule,

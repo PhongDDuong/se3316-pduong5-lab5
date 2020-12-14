@@ -13,6 +13,7 @@ import { CourseService } from '../course.service';
 })
 export class AccountDetailComponent implements OnInit {
   @Input() account: Account;
+  loggedInAccount: Account;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,8 +26,8 @@ export class AccountDetailComponent implements OnInit {
   }
   
   isAdmin(): boolean{
-    if(this.account){
-      if(this.account.admin=="true"){
+    if(this.loggedInAccount){
+      if(this.loggedInAccount.admin=="true"){
         return(true);
       }
       else{
@@ -43,6 +44,8 @@ export class AccountDetailComponent implements OnInit {
     this.courseService.getAccount(account)
       .subscribe(account => {
         this.account = account[0];
+        this.loggedInAccount = JSON.parse(localStorage.getItem('user'));
+        console.log(this.account)
       });
   }
 
@@ -62,7 +65,7 @@ export class AccountDetailComponent implements OnInit {
       state="false";
     }
     this.courseService.updateAccount(name,email,password,admin,state)
-    .subscribe();
+    .subscribe(result => console.log(result));
     this.refresh();
   }
 
@@ -76,7 +79,7 @@ export class AccountDetailComponent implements OnInit {
       state="false";
     }
     this.courseService.updateAccount(name,email,password,state,activated)
-    .subscribe();
+    .subscribe(result => console.log(result));
     this.refresh();
   }
 

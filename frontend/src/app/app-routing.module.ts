@@ -8,7 +8,7 @@ import { AccountDetailComponent } from './account-detail/account-detail.componen
 import { AboutpageComponent } from './aboutpage/aboutpage.component';
 import { LoginComponent } from './login/login.component';
 import { AccountsComponent } from './accounts/accounts.component';
-
+import { InfopageComponent } from './infopage/infopage.component';
 
 const routes: Routes = [
   { path: 'courses', component: CoursesComponent },
@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'detail/:subject/:catalog_nbr', component: CourseDetailComponent },
   { path: 'account/:account', component: AccountDetailComponent },
   { path: 'schedule/:name', component: ScheduleDetailComponent },
+  { path: 'infopage/:page', component: InfopageComponent },
 ];
 
 @NgModule({
